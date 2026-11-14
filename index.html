@@ -1,0 +1,1783 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Thesis Draft</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Code+Pro:wght@400;500&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&family=Tinos:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+/* Layout: full-bleed editor app with two disguises (LaTeX workspace / word processor); paper surfaces stay white in both themes. */
+:root{
+  --bg:#eef0f3; --panel:#ffffff; --panel-2:#f3f5f8; --line:#dde1e7; --hover:#e9edf2; --sel:#e2e9f3;
+  --fg:#1d2228; --fg-2:#56606c; --fg-3:#8b939d;
+  --top:#252a31; --top-fg:#eceef1; --top-fg-2:#aab1bb; --top-hover:#353b44;
+  --accent:#16775a; --accent-fg:#ffffff; --accent-soft:#e3f2ec;
+  --ed-bg:#ffffff; --ed-gutter:#f4f5f7; --ed-gutter-fg:#a0a7b0; --ed-cur:#f2f6fb; --caret:#1d2228;
+  --t-cmd:#1f4fb6; --t-sec:#8222a8; --t-env:#b4561b; --t-math:#167a6b; --t-cm:#8b939d; --t-br:#8657c2;
+  --pv-bg:#cdd1d6;
+  --w-title:#34477e; --w-title-fg:#ffffff; --w-title-fg-2:#d5dcef; --w-search:#4a5c93; --w-ribbon:#f6f7f9; --w-canvas:#e6e7ea; --w-accent:#34477e;
+  --scrim:rgba(20,24,30,.42); --shadow:0 10px 30px rgba(15,20,30,.22);
+  --toast-bg:#20252c; --toast-fg:#f1f3f5;
+  --paper:#ffffff; --ink:#151515; --paper-link:#1a55a8; --w-head:#24407a; --paper-muted:#666666;
+  --ui:"Inter", system-ui, -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --mono:"Source Code Pro", ui-monospace, Menlo, Consolas, "PingFang SC", "Microsoft YaHei", monospace;
+  --tex:"STIX Two Text", "Times New Roman", "Songti SC", "Noto Serif SC", "SimSun", serif;
+  --doc:"Tinos", "Times New Roman", "Songti SC", "Noto Serif SC", "SimSun", serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#15181c; --panel:#1c2025; --panel-2:#21262c; --line:#30363e; --hover:#2a3038; --sel:#2b3440;
+  --fg:#e3e6ea; --fg-2:#a5adb7; --fg-3:#6f7884;
+  --top:#111316; --top-fg:#e6e8eb; --top-fg-2:#9ba3ad; --top-hover:#252a31;
+  --accent:#1f8a69; --accent-fg:#ffffff; --accent-soft:#183a30;
+  --ed-bg:#1a1d22; --ed-gutter:#1e2227; --ed-gutter-fg:#5c6570; --ed-cur:#232930; --caret:#e3e6ea;
+  --t-cmd:#7ea9ff; --t-sec:#d79cf3; --t-env:#f0a866; --t-math:#6fd1bd; --t-cm:#6f7884; --t-br:#b89be9;
+  --pv-bg:#2a2e34;
+  --w-title:#24345f; --w-title-fg:#f1f3f8; --w-title-fg-2:#aeb8d4; --w-search:#33446f; --w-ribbon:#1f2328; --w-canvas:#2a2d32; --w-accent:#8ea6e6;
+  --scrim:rgba(0,0,0,.55); --shadow:0 10px 30px rgba(0,0,0,.5);
+  --toast-bg:#e9ecef; --toast-fg:#16191d;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#15181c; --panel:#1c2025; --panel-2:#21262c; --line:#30363e; --hover:#2a3038; --sel:#2b3440;
+  --fg:#e3e6ea; --fg-2:#a5adb7; --fg-3:#6f7884;
+  --top:#111316; --top-fg:#e6e8eb; --top-fg-2:#9ba3ad; --top-hover:#252a31;
+  --accent:#1f8a69; --accent-fg:#ffffff; --accent-soft:#183a30;
+  --ed-bg:#1a1d22; --ed-gutter:#1e2227; --ed-gutter-fg:#5c6570; --ed-cur:#232930; --caret:#e3e6ea;
+  --t-cmd:#7ea9ff; --t-sec:#d79cf3; --t-env:#f0a866; --t-math:#6fd1bd; --t-cm:#6f7884; --t-br:#b89be9;
+  --pv-bg:#2a2e34;
+  --w-title:#24345f; --w-title-fg:#f1f3f8; --w-title-fg-2:#aeb8d4; --w-search:#33446f; --w-ribbon:#1f2328; --w-canvas:#2a2d32; --w-accent:#8ea6e6;
+  --scrim:rgba(0,0,0,.55); --shadow:0 10px 30px rgba(0,0,0,.5);
+  --toast-bg:#e9ecef; --toast-fg:#16191d;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:13px/1.4 var(--ui);overflow:hidden;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+svg.ico{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.skin{height:100%;display:flex;flex-direction:column;min-height:0}
+.gutter-x{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* ---------- LaTeX workspace ---------- */
+.lx-top{height:44px;flex:none;display:flex;align-items:center;gap:2px;background:var(--top);color:var(--top-fg)}
+.tb{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 9px;border-radius:4px;color:var(--top-fg-2);font-size:12.5px;white-space:nowrap}
+.tb:hover{background:var(--top-hover);color:var(--top-fg)}
+.lx-title{flex:1;min-width:0;text-align:center;font-weight:600;font-size:13.5px;color:var(--top-fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 8px}
+.ws{flex:1;display:flex;min-height:0}
+.files{width:212px;flex:none;background:var(--panel-2);border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
+.ftools{display:flex;gap:2px;padding:5px 8px;border-bottom:1px solid var(--line)}
+.ftree{padding:6px 0;overflow:auto;flex:1}
+.fi{display:flex;align-items:center;gap:7px;padding:4px 12px;color:var(--fg-2);white-space:nowrap;cursor:default}
+.fi.in{padding-left:31px}
+.fi.on{background:var(--sel);color:var(--fg);font-weight:500}
+.fi .chev{width:12px;height:12px}
+.outline{border-top:1px solid var(--line);height:40%;display:flex;flex-direction:column;min-height:0}
+.ohd{padding:9px 12px 5px;font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--fg-3);font-weight:600}
+.olist{overflow:auto;padding-bottom:8px}
+.oi{padding:3px 12px;color:var(--fg-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12.5px}
+.oi.l2{padding-left:26px;font-size:12px;color:var(--fg-3)}
+.oi.empty{color:var(--fg-3);font-style:italic}
+.ed{flex:1;min-width:0;min-height:0;display:flex;flex-direction:column;background:var(--ed-bg);border-right:1px solid var(--line);position:relative}
+.bar{height:38px;flex:none;display:flex;align-items:center;gap:2px;padding:0 8px;border-bottom:1px solid var(--line);background:var(--panel);overflow:hidden;white-space:nowrap}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:5px;overflow:hidden;margin-right:6px;flex:none}
+.seg span{padding:3px 10px;font-size:12px;color:var(--fg-2)}
+.seg .on{background:var(--sel);color:var(--fg);font-weight:500}
+.ib{width:28px;height:28px;display:inline-grid;place-items:center;border-radius:4px;color:var(--fg-2);flex:none}
+.ib:hover{background:var(--hover)}
+.sep{width:1px;height:18px;background:var(--line);margin:0 4px;flex:none}
+.dd{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;font-size:12px;color:var(--fg-2);border-radius:4px;flex:none}
+.dd:hover{background:var(--hover)}
+.dd svg.ico{width:12px;height:12px}
+#edscroll{flex:1;overflow:auto;position:relative;font:13px/20px var(--mono);counter-reset:ln;padding:6px 0 45vh;background:linear-gradient(to right,var(--ed-gutter) 50px,transparent 50px)}
+.ln{display:flex;min-height:20px;counter-increment:ln}
+.gut{flex:none;width:50px;padding-right:12px;text-align:right;color:var(--ed-gutter-fg);background:var(--ed-gutter);user-select:none;font-size:12px}
+.gut::before{content:counter(ln)}
+.code{flex:1;min-width:0;padding:0 16px 0 10px;white-space:pre-wrap;word-break:break-word;overflow-wrap:anywhere;color:var(--fg)}
+.ln.cur{background:var(--ed-cur)}
+.ln.cur .gut{color:var(--fg-2)}
+.t-cmd{color:var(--t-cmd)} .t-sec{color:var(--t-sec);font-weight:500} .t-env{color:var(--t-env)} .t-math{color:var(--t-math)} .t-cm{color:var(--t-cm);font-style:italic} .t-br{color:var(--t-br)} .t-mcmd{color:var(--t-math);font-weight:500}
+.caret{display:inline-block;width:2px;height:1.15em;margin-right:-2px;vertical-align:-.22em;background:var(--caret);animation:blink 1.06s steps(1) infinite}
+body.typing .caret{animation:none}
+@keyframes blink{50%{opacity:0}}
+.edstat{height:24px;flex:none;display:flex;align-items:center;gap:14px;padding:0 12px;border-top:1px solid var(--line);background:var(--panel);color:var(--fg-3);font-size:11.5px;white-space:nowrap;overflow:hidden;font-variant-numeric:tabular-nums}
+.edstat .grow{flex:1}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--fg-3);opacity:.35;display:inline-block}
+.dot.on{background:var(--accent);opacity:.9}
+.saved{display:inline-flex;align-items:center;gap:5px}
+.saved svg.ico{width:13px;height:13px}
+#acpop{position:fixed;z-index:40;background:var(--panel);border:1px solid var(--line);border-radius:4px;box-shadow:var(--shadow);font:12px/1 var(--mono);min-width:220px;padding:3px 0}
+#acpop div{padding:6px 10px;display:flex;justify-content:space-between;gap:18px;color:var(--fg-2)}
+#acpop div.on{background:var(--sel);color:var(--fg)}
+#acpop b{color:var(--t-cmd);font-weight:600}
+#acpop small{color:var(--fg-3);font-family:var(--ui);font-size:10.5px}
+.pv{flex:1;min-width:0;min-height:0;display:flex;flex-direction:column;background:var(--pv-bg)}
+.cbtn{display:inline-flex;align-items:center;height:28px;border-radius:5px;overflow:hidden;flex:none;margin-right:6px}
+.compile{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;background:var(--accent);color:var(--accent-fg);font-weight:600;font-size:12.5px}
+.cdrop{height:28px;width:24px;display:grid;place-items:center;background:var(--accent);color:var(--accent-fg);border-left:1px solid var(--accent-soft)}
+.cdrop svg.ico{width:12px;height:12px}
+.spin svg.ico{animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pvbar .grow{flex:1}
+.pgno{font-size:12px;color:var(--fg-2);font-variant-numeric:tabular-nums;padding:0 6px}
+#pvscroll{flex:1;overflow:auto;position:relative;padding:16px}
+.pages{display:flex;flex-direction:column;align-items:center;gap:14px}
+.ppage{position:relative;width:100%;max-width:760px;aspect-ratio:8.5/11;background:var(--paper);color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.28);container-type:inline-size;flex:none}
+.pbody{position:absolute;top:8.5%;bottom:7.5%;left:11.5%;right:11.5%;overflow:hidden;font-family:var(--tex);font-size:1.72cqw;line-height:1.34;text-align:justify;hyphens:auto}
+.pfoot{position:absolute;bottom:3.6%;left:0;right:0;text-align:center;font:1.6cqw var(--tex);color:var(--ink)}
+.pbody p{margin:0;text-indent:1.5em}
+.pbody.zh p{text-indent:2em}
+.pbody h2+p,.pbody h3+p,.pbody h4+p{text-indent:0}
+.pbody.zh h2+p,.pbody.zh h3+p,.pbody.zh h4+p{text-indent:2em}
+
+/* shared paper typography */
+.paper .p-title{text-align:center;margin:.4em 0 1.5em;text-indent:0}
+.paper .p-title h1{font-size:1.62em;font-weight:400;line-height:1.25;margin:0 0 .9em;text-wrap:balance}
+.paper .p-author{font-size:1.12em;line-height:1.4}
+.paper .p-date{margin-top:.7em;font-size:1.08em}
+.paper .p-abs{margin:0 6% 1.4em;font-size:.93em}
+.paper .p-abs-h{text-align:center;font-weight:600;margin-bottom:.35em}
+.paper h2{font-size:1.22em;font-weight:600;margin:1.15em 0 .5em;line-height:1.25}
+.paper h3{font-size:1.07em;font-weight:600;margin:.95em 0 .45em}
+.paper h4{font-size:1em;font-weight:600;margin:.8em 0 .4em}
+.paper .num{margin-right:.85em}
+.paper .p-eq{display:flex;align-items:center;margin:.55em 0}
+.paper .p-eq .eqb{flex:1;min-width:0;text-align:center;overflow:hidden}
+.paper .p-eq .eqn{flex:none;padding-left:.6em}
+.paper mjx-container[display="true"]{margin:0!important}
+.paper .eqb svg,.watom svg{max-width:100%;height:auto}
+.paper .p-tab,.paper .p-fig{margin:1em 0;text-align:center}
+.paper figcaption{font-size:.93em;margin:.45em 0;text-indent:0;text-align:center}
+.paper .p-tab table{margin:0 auto;border-collapse:collapse;font-size:.74em;border-top:1.4px solid var(--ink);border-bottom:1.4px solid var(--ink);font-variant-numeric:tabular-nums}
+.paper td,.paper th{padding:.22em .42em;font-weight:400;white-space:nowrap;text-align:center}
+.paper td:first-child,.paper th:first-child{text-align:left}
+.paper tr.rule>*{border-top:.8px solid var(--ink)}
+.paper thead tr:last-child>*{border-bottom:.8px solid var(--ink)}
+.paper .p-fig svg{width:80%;height:auto;color:var(--ink)}
+.paper ul,.paper ol{margin:.35em 0 .55em;padding-left:2em;text-align:justify}
+.paper li{margin:.18em 0}
+.paper .p-refs{font-size:.88em;padding-left:2.3em}
+.paper .p-refs li{margin:.25em 0}
+.paper .cite{color:var(--paper-link)}
+.paper .texfb{font-family:var(--mono);font-size:.82em;color:var(--paper-muted)}
+.paper .texfb.d{display:block;text-align:center}
+.paper code{font-family:var(--mono);font-size:.9em}
+
+/* ---------- Word processor ---------- */
+.wd-title{height:40px;flex:none;display:flex;align-items:center;gap:6px;background:var(--w-title);color:var(--w-title-fg)}
+.wd-title .tb{color:var(--w-title-fg-2)}
+.wd-title .tb:hover{background:var(--w-search);color:var(--w-title-fg)}
+.wd-doc{flex:1;min-width:0;text-align:center;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wd-doc span{color:var(--w-title-fg-2)}
+.wd-search{background:var(--w-search);border-radius:5px;height:26px;display:flex;align-items:center;gap:6px;padding:0 10px;width:min(260px,26vw);color:var(--w-title-fg-2);font-size:12px;flex:none}
+.avatar{width:26px;height:26px;border-radius:50%;background:var(--w-search);display:grid;place-items:center;font-size:11px;font-weight:600;flex:none}
+.wd-tabs{display:flex;gap:2px;background:var(--w-title);flex:none;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+.wt{color:var(--w-title-fg-2);padding:6px 11px 7px;font-size:12.5px;border-radius:5px 5px 0 0;flex:none}
+.wt.on{background:var(--w-ribbon);color:var(--fg);font-weight:500}
+.ribbon{background:var(--w-ribbon);border-bottom:1px solid var(--line);display:flex;align-items:stretch;padding-top:6px;padding-bottom:4px;overflow-x:auto;flex:none;height:94px;scrollbar-width:thin}
+.rg{display:flex;flex-direction:column;padding:0 12px;border-right:1px solid var(--line);flex:none}
+.rg:first-child{padding-left:0}
+.rg-b{flex:1;display:flex;align-items:center;gap:4px}
+.rg-col{display:flex;flex-direction:column;gap:5px}
+.rg-row{display:flex;align-items:center;gap:2px}
+.rg-n{font-size:10.5px;color:var(--fg-3);text-align:center;padding-top:2px}
+.big{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11.5px;color:var(--fg-2);padding:4px 6px;border-radius:4px}
+.big svg.ico{width:24px;height:24px;stroke-width:1.5}
+.box{display:inline-flex;align-items:center;justify-content:space-between;gap:6px;height:24px;border:1px solid var(--line);background:var(--panel);border-radius:3px;padding:0 6px;font-size:12px;color:var(--fg)}
+.box svg.ico{width:11px;height:11px;color:var(--fg-3)}
+.fn{width:150px;font-family:var(--doc)}
+.fs{width:48px}
+.ri{width:26px;height:24px;display:inline-flex;align-items:center;justify-content:center;border-radius:3px;color:var(--fg-2);font-size:13px}
+.ri:hover{background:var(--hover)}
+.ri.on{background:var(--sel);color:var(--fg)}
+.ri sub,.ri sup{font-size:8px;line-height:0}
+.styles{display:flex;gap:4px}
+.sty{width:78px;height:54px;border:1px solid var(--line);background:var(--panel);display:flex;flex-direction:column;justify-content:center;gap:2px;padding:4px 7px;font-size:10.5px;color:var(--fg-3);border-radius:3px;text-align:left}
+.sty b{font-family:var(--doc);font-weight:400;font-size:14px;color:var(--fg);white-space:nowrap;overflow:hidden}
+.sty.h b{color:var(--w-accent);font-weight:700}
+.sty.on{outline:2px solid var(--w-accent);outline-offset:-1px}
+#wcanvas{flex:1;overflow:auto;background:var(--w-canvas);padding-top:24px;padding-bottom:45vh}
+#wpages{display:flex;flex-direction:column;align-items:center;gap:20px}
+.wpage{position:relative;width:100%;max-width:816px;aspect-ratio:8.5/11;background:var(--paper);color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.25);flex:none}
+.wbody{position:absolute;top:9.1%;bottom:9.1%;left:11.76%;right:11.76%;overflow:hidden;font-family:var(--doc);font-size:16px;line-height:1.5}
+.wbody p{margin:0}
+.w-p{margin:0 0 .55em!important;text-align:justify}
+.wbody.zh .w-p,.wbody.zh .w-abs{text-indent:2em}
+.w-title{text-align:center;font-size:25px;font-weight:700;line-height:1.25;margin:0 0 .5em!important;text-wrap:balance}
+.w-author{text-align:center;color:var(--ink)}
+.w-abs-h{text-align:center;margin:1.1em 0 .3em!important}
+.w-abs{margin:0 1.6em .6em!important;font-size:15px;text-align:justify}
+.w-h1{font-size:20px;font-weight:700;color:var(--w-head);margin:1em 0 .4em!important}
+.w-h2{font-size:17px;font-weight:700;color:var(--w-head);margin:.9em 0 .35em!important}
+.w-h3{font-size:16px;font-weight:700;font-style:italic;color:var(--w-head);margin:.8em 0 .3em!important}
+.w-li,.w-oli{margin:0 0 .3em 1.6em!important;position:relative;text-align:justify}
+.w-li::before{content:"\2022";position:absolute;left:-1.1em}
+.wblock{margin:.4em 0}
+.wblock .p-tab table{font-size:.78em}
+.wbody .tt{font-family:var(--mono);font-size:.9em}
+.watom mjx-container{display:inline-block!important;margin:0!important}
+.wd-stat{height:26px;flex:none;display:flex;align-items:center;gap:16px;background:var(--panel-2);border-top:1px solid var(--line);color:var(--fg-2);font-size:11.5px;white-space:nowrap;overflow:hidden;font-variant-numeric:tabular-nums}
+.wd-stat .grow{flex:1}
+.zoom{display:inline-flex;align-items:center;gap:6px}
+.zoom i{display:inline-block;width:90px;height:2px;background:var(--fg-3);position:relative}
+.zoom i::after{content:"";position:absolute;left:50%;top:-4px;width:2px;height:10px;background:var(--fg-2)}
+
+/* ---------- settings / toast ---------- */
+.modal{position:fixed;inset:0;background:var(--scrim);display:grid;place-items:center;z-index:50;padding:16px}
+.dlg{width:min(580px,100%);max-height:100%;overflow:auto;background:var(--panel);color:var(--fg);border-radius:10px;box-shadow:var(--shadow);padding:18px 22px 20px}
+.dlg h2{font-size:16px;margin:0 0 4px;font-weight:600}
+.dlg .sub{color:var(--fg-3);font-size:12px;margin:0 0 10px}
+.row{display:grid;grid-template-columns:8.5em minmax(0,1fr);gap:12px;align-items:center;padding:9px 0;border-top:1px solid var(--line)}
+.row>label:first-child,.row>.lab{color:var(--fg-2);font-size:12.5px}
+.rng{display:flex;align-items:center;gap:10px}
+.rng input{flex:1;min-width:0;accent-color:var(--accent)}
+.val{font-variant-numeric:tabular-nums;color:var(--fg-2);min-width:4.2em;text-align:right;font-size:12px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);border-radius:6px;padding:5px 11px;font-size:12.5px;color:var(--fg-2)}
+.chip.on{border-color:var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:500}
+.dlg select{height:30px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--fg);font:inherit;padding:0 8px;max-width:100%}
+.dlg textarea{width:100%;height:150px;font:12px/1.5 var(--mono);background:var(--ed-bg);color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:8px;resize:vertical;margin-top:8px}
+.sw{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:var(--fg-2)}
+.sw input{accent-color:var(--accent);width:16px;height:16px}
+.keys{font-size:12px;color:var(--fg-2);line-height:2}
+kbd{font:11px var(--mono);border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:var(--panel-2);color:var(--fg)}
+.btns{display:flex;gap:8px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap}
+.btn{height:32px;padding:0 14px;border-radius:6px;border:1px solid var(--line);font-size:12.5px}
+.btn:hover{background:var(--hover)}
+.btn.pri{background:var(--accent);color:var(--accent-fg);border-color:transparent}
+.toast{position:fixed;left:50%;bottom:calc(40px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--toast-bg);color:var(--toast-fg);padding:9px 14px;border-radius:7px;font-size:12.5px;z-index:60;box-shadow:var(--shadow);max-width:calc(100% - 32px);text-align:center;line-height:1.6}
+.toast kbd{background:transparent;color:inherit;border-color:currentColor;opacity:.85}
+
+@media (max-width:860px){ .files{display:none} .tb .lbl{display:none} .hide-md{display:none!important} }
+@media (max-width:640px){
+  .ws{flex-direction:column}
+  .ed{border-right:0;border-bottom:1px solid var(--line);flex:1.25}
+  .pv{flex:1}
+  .hide-sm{display:none!important}
+  .wd-search{display:none}
+  .row{grid-template-columns:minmax(0,1fr);gap:6px}
+  #wcanvas{padding-top:12px}
+}
+@media (prefers-reduced-motion: reduce){ .caret{animation:none} .spin svg.ico{animation:none} }
+</style>
+</head>
+<body>
+
+<!-- ===================== LaTeX skin ===================== -->
+<div class="skin" id="lx">
+  <header class="lx-top gutter-x">
+    <button class="tb" data-i="menu"><span class="lbl">Menu</span></button>
+    <button class="tb" data-i="home" aria-label="Projects"></button>
+    <div class="lx-title" id="projname">Master Thesis</div>
+    <button class="tb hide-md" data-i="pen"><span class="lbl">Review</span></button>
+    <button class="tb" data-i="share"><span class="lbl">Share</span></button>
+    <button class="tb hide-sm" data-i="upload"><span class="lbl">Submit</span></button>
+    <button class="tb hide-md" data-i="clock"><span class="lbl">History</span></button>
+    <button class="tb hide-sm" data-i="cols"><span class="lbl">Layout</span></button>
+    <button class="tb" data-i="chat"><span class="lbl">Chat</span></button>
+  </header>
+  <div class="ws">
+    <aside class="files">
+      <div class="ftools">
+        <button class="ib" data-i="filePlus" aria-label="New file"></button>
+        <button class="ib" data-i="folderPlus" aria-label="New folder"></button>
+        <button class="ib" data-i="upload" aria-label="Upload"></button>
+      </div>
+      <div class="ftree">
+        <div class="fi" data-i="folder">figures</div>
+        <div class="fi in" data-i="image">framework.pdf</div>
+        <div class="fi in" data-i="image">ablation.pdf</div>
+        <div class="fi in" data-i="image">case_study.png</div>
+        <div class="fi" data-i="folder">sections</div>
+        <div class="fi in" data-i="file">appendix.tex</div>
+        <div class="fi in" data-i="file">notation.tex</div>
+        <div class="fi on" data-i="file" id="curfile">main.tex</div>
+        <div class="fi" data-i="file">refs.bib</div>
+        <div class="fi" data-i="file">neurips_2026.sty</div>
+      </div>
+      <div class="outline">
+        <div class="ohd">File outline</div>
+        <div class="olist" id="olist"><div class="oi empty">No sections yet</div></div>
+      </div>
+    </aside>
+    <section class="ed">
+      <div class="bar">
+        <div class="seg"><span class="on">Code Editor</span><span>Visual Editor</span></div>
+        <button class="ib" data-i="undo" aria-label="Undo"></button>
+        <button class="ib" data-i="redo" aria-label="Redo"></button>
+        <span class="sep hide-sm"></span>
+        <button class="dd hide-sm">Normal text<span data-i="chev"></span></button>
+        <span class="sep hide-sm"></span>
+        <button class="ib hide-sm" data-i="bold" aria-label="Bold"></button>
+        <button class="ib hide-sm" data-i="italic" aria-label="Italic"></button>
+        <button class="ib hide-md" data-i="sigma" aria-label="Math"></button>
+        <button class="ib hide-md" data-i="link" aria-label="Link"></button>
+        <button class="ib hide-md" data-i="list" aria-label="List"></button>
+        <span style="flex:1"></span>
+        <button class="ib" data-i="search" aria-label="Search"></button>
+      </div>
+      <div id="edscroll"><div id="lines"></div></div>
+      <div class="edstat">
+        <span id="st-file">main.tex</span>
+        <span id="st-pos">Ln 1, Col 1</span>
+        <span id="st-words">0 words</span>
+        <span class="grow"></span>
+        <span class="dot" id="autodot" title=""></span>
+        <span class="saved" id="st-saved"><span data-i="cloud"></span><span>Saved</span></span>
+      </div>
+    </section>
+    <section class="pv">
+      <div class="bar pvbar">
+        <span class="cbtn"><button class="compile" id="compile" data-i="refresh">Recompile</button><span class="cdrop" data-i="chev"></span></span>
+        <button class="ib" data-i="doc" aria-label="Logs"></button>
+        <span class="grow"></span>
+        <span class="pgno" id="pgno">1 / 1</span>
+        <button class="dd hide-sm">Page width<span data-i="chev"></span></button>
+        <button class="ib hide-sm" data-i="download" aria-label="Download PDF"></button>
+      </div>
+      <div id="pvscroll"><div class="pages" id="pages"></div></div>
+    </section>
+  </div>
+</div>
+
+<!-- ===================== Word skin ===================== -->
+<div class="skin" id="wd" hidden>
+  <header class="wd-title gutter-x">
+    <button class="tb" data-i="save" aria-label="Save"></button>
+    <button class="tb" data-i="undo" aria-label="Undo"></button>
+    <button class="tb hide-sm" data-i="redo" aria-label="Redo"></button>
+    <div class="wd-doc"><b id="wdname">Thesis_Draft_v7.docx</b> <span id="wdsaved">· Saved</span></div>
+    <div class="wd-search"><span data-i="search"></span>Search</div>
+    <div class="avatar">ME</div>
+  </header>
+  <nav class="wd-tabs gutter-x">
+    <span class="wt">File</span><span class="wt on">Home</span><span class="wt">Insert</span><span class="wt">Draw</span><span class="wt">Design</span><span class="wt">Layout</span><span class="wt">References</span><span class="wt">Mailings</span><span class="wt">Review</span><span class="wt">View</span><span class="wt">Help</span>
+  </nav>
+  <div class="ribbon gutter-x">
+    <div class="rg"><div class="rg-b"><button class="big" data-i="paste">Paste</button></div><div class="rg-n">Clipboard</div></div>
+    <div class="rg"><div class="rg-b"><div class="rg-col">
+      <div class="rg-row"><span class="box fn" id="fontname">Times New Roman<span data-i="chev"></span></span><span class="box fs">12<span data-i="chev"></span></span></div>
+      <div class="rg-row"><span class="ri" id="rb" data-i="bold"></span><span class="ri" id="ri" data-i="italic"></span><span class="ri" data-i="under"></span><span class="ri">x<sub>2</sub></span><span class="ri">x<sup>2</sup></span><span class="ri" style="text-decoration:underline;text-decoration-color:#d23;text-decoration-thickness:3px">A</span></div>
+    </div></div><div class="rg-n">Font</div></div>
+    <div class="rg"><div class="rg-b"><div class="rg-col">
+      <div class="rg-row"><span class="ri" data-i="list"></span><span class="ri" data-i="olist"></span><span class="ri" data-i="indent"></span></div>
+      <div class="rg-row"><span class="ri" data-i="alignL"></span><span class="ri" data-i="alignC"></span><span class="ri" data-i="alignR"></span><span class="ri on" data-i="alignJ"></span></div>
+    </div></div><div class="rg-n">Paragraph</div></div>
+    <div class="rg"><div class="rg-b"><div class="styles">
+      <button class="sty on" data-sty="p"><b>AaBbCc</b>Normal</button>
+      <button class="sty h" data-sty="h1"><b>AaBbC</b>Heading 1</button>
+      <button class="sty h" data-sty="h2"><b>AaBbCc</b>Heading 2</button>
+      <button class="sty hide-sm" data-sty="title"><b style="font-size:17px">AaB</b>Title</button>
+      <button class="sty hide-md" data-sty="li"><b>• AaBb</b>List Para</button>
+    </div></div><div class="rg-n">Styles</div></div>
+    <div class="rg"><div class="rg-b"><div class="rg-col">
+      <span class="dd" data-i="search">Find</span><span class="dd" data-i="replace">Replace</span>
+    </div></div><div class="rg-n">Editing</div></div>
+  </div>
+  <div id="wcanvas" class="gutter-x"><div id="wpages"></div></div>
+  <footer class="wd-stat gutter-x">
+    <span id="ws-page">Page 1 of 1</span>
+    <span id="ws-words">0 words</span>
+    <span class="hide-sm" id="ws-lang">English (United States)</span>
+    <span class="grow"></span>
+    <span class="dot" id="autodot2"></span>
+    <span class="hide-sm">Focus</span>
+    <span class="zoom hide-sm"><span>−</span><i></i><span>+</span> 100%</span>
+  </footer>
+</div>
+
+<div id="acpop" hidden></div>
+<div class="toast" id="toast" hidden></div>
+
+<!-- ===================== Settings ===================== -->
+<div class="modal" id="settings" hidden>
+  <div class="dlg" role="dialog" aria-modal="true" aria-labelledby="set-h">
+    <h2 id="set-h">Editor settings</h2>
+    <p class="sub">随便敲键盘，屏幕就会按下面的节奏自动吐出论文。设置只保存在这个浏览器里。</p>
+    <div class="row"><span class="lab">伪装界面</span>
+      <div class="chips" id="o-skin"><button class="chip" data-v="latex">LaTeX 在线编辑器</button><button class="chip" data-v="word">Word 文档</button></div></div>
+    <div class="row"><label for="o-preset">论文内容</label>
+      <div><select id="o-preset"><option value="en">英文论文 · 交通流量预测（GNN）</option><option value="zh">中文学位论文 · 同主题</option><option value="custom">自定义（粘贴自己的 .tex）</option></select>
+      <textarea id="o-custom" hidden placeholder="把你提前存好的文献综述、公式推导、表格粘贴到这里。完整 .tex 文档或只有正文的片段都可以。"></textarea></div></div>
+    <div class="row"><label for="o-perkey">每次按键吐字</label>
+      <div class="rng"><input type="range" id="o-perkey" min="1" max="10" step="1"><span class="val" id="v-perkey"></span></div></div>
+    <div class="row"><label for="o-cps">打字速度上限</label>
+      <div class="rng"><input type="range" id="o-cps" min="8" max="45" step="1"><span class="val" id="v-cps"></span></div></div>
+    <div class="row"><label for="o-typo">打错再删</label>
+      <div class="rng"><input type="range" id="o-typo" min="0" max="10" step="1"><span class="val" id="v-typo"></span></div></div>
+    <div class="row"><label for="o-pause">停顿思考</label>
+      <div class="rng"><input type="range" id="o-pause" min="0" max="10" step="1"><span class="val" id="v-pause"></span></div></div>
+    <div class="row"><span class="lab">自动打字</span>
+      <div class="rng"><label class="sw"><input type="checkbox" id="o-auto">不按键也自己写</label><input type="range" id="o-autocps" min="3" max="20" step="1" aria-label="自动打字速度"><span class="val" id="v-autocps"></span></div></div>
+    <div class="row"><span class="lab">机械键盘音效</span>
+      <div class="rng"><label class="sw"><input type="checkbox" id="o-sound">开启</label><select id="o-switch" aria-label="轴体"><option value="blue">青轴 · 清脆</option><option value="brown">茶轴 · 沉稳</option></select><input type="range" id="o-vol" min="5" max="100" step="5" aria-label="音量"><span class="val" id="v-vol"></span></div></div>
+    <div class="row"><label for="o-theme">外观</label>
+      <div><select id="o-theme"><option value="auto">跟随系统</option><option value="light">浅色</option><option value="dark">深色</option></select></div></div>
+    <div class="row"><span class="lab">快捷键</span>
+      <div class="keys"><kbd>任意键</kbd> 写论文 · <kbd>F2</kbd> 设置 · <kbd>F4</kbd> 自动打字 · <kbd>F8</kbd> 静音 · <kbd>Ctrl</kbd>+<kbd>S</kbd> 编译/保存 · <kbd>Esc</kbd> 关闭</div></div>
+    <div class="btns"><button class="btn" id="b-reset">从头开始写</button><button class="btn pri" id="b-close">继续“写论文”</button></div>
+  </div>
+</div>
+
+<!-- ===================== Paper content ===================== -->
+<script type="text/plain" id="preset-en">
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{hyperref}
+
+\title{Adaptive Spatio-Temporal Graph Attention Networks for Long-Horizon Traffic Forecasting}
+\author{Anonymous Submission \\ Department of Computer Science}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Accurate traffic forecasting is a cornerstone of intelligent transportation systems, yet it remains challenging because the spatial dependencies among road segments are complex and change over time, and traffic signals are strongly non-stationary. Most graph-based forecasting models rely on a fixed adjacency matrix computed from road-network distances, which cannot capture latent or time-varying correlations between distant sensors. In this paper, we propose an Adaptive Spatio-Temporal Graph Attention Network (ASTGAT) that jointly learns a dynamic graph structure and multi-scale temporal representations. Specifically, we introduce a node-adaptive graph generator that infers a time-dependent adjacency matrix from learnable node embeddings and the current traffic state, together with a gated dilated temporal convolution module that captures both short-term fluctuations and long-range periodicity. Extensive experiments on two public benchmarks, METR-LA and PEMS-BAY, show that ASTGAT consistently outperforms strong baselines and reduces the mean absolute error by 6.8\% at the 60-minute horizon.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+
+With the rapid growth of urbanization, traffic congestion has become one of the most pressing problems faced by modern cities. Accurate short- and long-term traffic forecasting allows transportation agencies to optimize signal timing, plan routes in advance, and allocate resources more effectively. Consequently, traffic forecasting has attracted sustained attention from both the transportation and machine learning communities over the past two decades~\cite{williams2003sarima,li2018dcrnn}.
+
+Traffic forecasting is a typical spatio-temporal prediction problem. On the one hand, the traffic state of a road segment is strongly influenced by its upstream and downstream neighbors, and congestion propagates along the road network in a highly non-linear manner. On the other hand, traffic flow exhibits rich temporal patterns, including daily and weekly periodicity, sudden changes caused by accidents, and gradual trends caused by seasonal effects. Classical statistical models such as the autoregressive integrated moving average (ARIMA) and its seasonal variants~\cite{williams2003sarima} assume stationarity and linearity, and therefore struggle to model these complex dynamics.
+
+In recent years, deep learning has substantially advanced the state of the art. Recurrent neural networks, in particular long short-term memory networks~\cite{hochreiter1997lstm}, have been widely used to capture temporal dependencies, while graph neural networks (GNNs)~\cite{kipf2017gcn,velickovic2018gat} offer a principled way to model the non-Euclidean structure of road networks. Representative methods such as DCRNN~\cite{li2018dcrnn} and STGCN~\cite{yu2018stgcn} combine graph convolution with recurrent or convolutional sequence models and achieve remarkable improvements over classical baselines.
+
+Despite this progress, two important limitations remain. First, most existing methods rely on a predefined adjacency matrix constructed from geographical distance or road connectivity. Such a graph is static and incomplete: two sensors that are far apart may still be highly correlated, for example when they both lie on a commuting corridor, and the strength of correlation varies with the time of day. Second, temporal modules based on recurrent networks suffer from error accumulation and slow training, while standard convolutions have a limited receptive field and fail to capture long-range periodicity.
+
+To address these issues, we propose ASTGAT, an adaptive spatio-temporal graph attention network. Our main contributions are summarized as follows:
+\begin{itemize}
+  \item We design a node-adaptive graph generator that learns a dynamic adjacency matrix from node embeddings and the current traffic state, without requiring any prior knowledge of the road network.
+  \item We propose a gated dilated temporal convolution module whose receptive field grows exponentially with depth, enabling efficient modeling of long input sequences.
+  \item We conduct extensive experiments on two real-world datasets, showing that ASTGAT achieves state-of-the-art accuracy, especially for long-horizon prediction.
+\end{itemize}
+
+The remainder of this paper is organized as follows. Section~\ref{sec:related} reviews related work. Section~\ref{sec:method} describes the proposed model in detail. Section~\ref{sec:exp} reports experimental results, and Section~\ref{sec:conclusion} concludes the paper.
+
+\section{Related Work}
+\label{sec:related}
+
+\subsection{Traffic Forecasting}
+
+Early studies on traffic forecasting were dominated by statistical time-series models. Williams and Hoel~\cite{williams2003sarima} showed that seasonal ARIMA models provide a strong theoretical foundation for univariate traffic prediction. However, these models treat each sensor independently and ignore spatial correlations. Machine learning approaches such as support vector regression and k-nearest neighbors relax the linearity assumption, but still require careful feature engineering.
+
+Deep learning methods learn representations directly from data. Li et al.~\cite{li2018dcrnn} modeled traffic flow as a diffusion process on a directed graph and proposed the diffusion convolutional recurrent neural network (DCRNN). Yu et al.~\cite{yu2018stgcn} replaced recurrent units with fully convolutional structures, which greatly accelerates training. Guo et al.~\cite{guo2019astgcn} further introduced spatial and temporal attention mechanisms to capture dynamic correlations, and Zheng et al.~\cite{zheng2020gman} proposed a graph multi-attention network with an encoder-decoder architecture for long-term prediction.
+
+\subsection{Graph Neural Networks}
+
+Graph neural networks generalize deep learning to graph-structured data. Spectral approaches define convolution in the Fourier domain of the graph Laplacian~\cite{bruna2014spectral}, and Defferrard et al.~\cite{defferrard2016cheb} proposed Chebyshev polynomial approximations to avoid expensive eigendecomposition. Kipf and Welling~\cite{kipf2017gcn} simplified this approach to a first-order approximation, resulting in the widely used graph convolutional network (GCN). Graph attention networks~\cite{velickovic2018gat} assign different weights to different neighbors through a self-attention mechanism inspired by the Transformer~\cite{vaswani2017attention}.
+
+A closely related line of work learns the graph structure itself. Graph WaveNet~\cite{wu2019graph} introduced a self-adaptive adjacency matrix learned from node embeddings, and AGCRN~\cite{bai2020agcrn} proposed node-adaptive parameter learning to capture node-specific patterns. However, the learned graphs in these methods remain static once training is complete. In contrast, our method generates a graph that evolves with the traffic state at every time step.
+
+\section{Methodology}
+\label{sec:method}
+
+\subsection{Problem Formulation}
+
+We represent the road network as a graph $\mathcal{G} = (\mathcal{V}, \mathcal{E}, \mathbf{A})$, where $\mathcal{V}$ is a set of $N$ sensors, $\mathcal{E}$ is the set of edges, and $\mathbf{A} \in \mathbb{R}^{N \times N}$ is a weighted adjacency matrix. The traffic observations at time step $t$ are denoted by $\mathbf{X}_t \in \mathbb{R}^{N \times C}$, where $C$ is the number of features, such as speed or flow. Given the observations of the previous $T$ steps, the goal is to learn a function $f$ that predicts the next $T'$ steps:
+\begin{equation}
+  \left[\mathbf{X}_{t+1}, \ldots, \mathbf{X}_{t+T'}\right] = f\left(\mathbf{X}_{t-T+1}, \ldots, \mathbf{X}_{t}; \mathcal{G}\right).
+  \label{eq:problem}
+\end{equation}
+
+\subsection{Adaptive Graph Generator}
+
+Instead of relying solely on the predefined matrix $\mathbf{A}$, we assign each node a learnable embedding vector and infer pairwise dependencies from these embeddings. Let $\mathbf{E} \in \mathbb{R}^{N \times d}$ denote the node embedding matrix. A static adaptive adjacency matrix can be obtained as
+\begin{equation}
+  \tilde{\mathbf{A}} = \mathrm{softmax}\left(\mathrm{ReLU}\left(\mathbf{E}\mathbf{E}^{\top}\right)\right),
+  \label{eq:static}
+\end{equation}
+where the ReLU function removes weak connections and the softmax function normalizes each row. To make the graph aware of the current traffic state, we modulate the node embeddings with a projection of the input:
+\begin{equation}
+  \mathbf{E}_t = \mathbf{E} \odot \tanh\left(\mathbf{X}_t \mathbf{W}_e + \mathbf{b}_e\right), \qquad
+  \mathbf{A}_t = \mathrm{softmax}\left(\mathrm{ReLU}\left(\mathbf{E}_t \mathbf{E}_t^{\top}\right)\right),
+  \label{eq:dynamic}
+\end{equation}
+where $\odot$ denotes element-wise multiplication and $\mathbf{W}_e \in \mathbb{R}^{C \times d}$ is a learnable projection. Based on $\mathbf{A}_t$, we adopt a $K$-hop graph convolution that aggregates information from multi-hop neighbors:
+\begin{equation}
+  \mathbf{Z}_t = \sum_{k=0}^{K} \left(\mathbf{A}_t\right)^{k} \mathbf{X}_t \mathbf{\Theta}_k,
+  \label{eq:gconv}
+\end{equation}
+where $\mathbf{\Theta}_k$ are the parameters of the $k$-th hop. In practice we set $K = 2$, which provides a good trade-off between accuracy and efficiency.
+
+\subsection{Spatial Graph Attention}
+
+Graph convolution assigns weights according to the graph structure but ignores the content of node features. We therefore add a spatial attention layer. For a node $i$ and its neighbor $j$, the attention coefficient is computed as
+\begin{equation}
+  \alpha_{ij} = \frac{\exp\left(\mathrm{LeakyReLU}\left(\mathbf{a}^{\top}\left[\mathbf{W}\mathbf{h}_i \,\|\, \mathbf{W}\mathbf{h}_j\right]\right)\right)}{\sum_{k \in \mathcal{N}_i} \exp\left(\mathrm{LeakyReLU}\left(\mathbf{a}^{\top}\left[\mathbf{W}\mathbf{h}_i \,\|\, \mathbf{W}\mathbf{h}_k\right]\right)\right)},
+  \label{eq:attention}
+\end{equation}
+where $\|$ denotes concatenation and $\mathcal{N}_i$ is the neighborhood of node $i$ in the learned graph. Multi-head attention is used to stabilize training, and the outputs of the $M$ heads are concatenated.
+
+\subsection{Gated Dilated Temporal Convolution}
+
+To capture temporal dependencies efficiently, we stack dilated causal convolutions with exponentially increasing dilation rates $d \in \{1, 2, 4, 8\}$. Each layer uses a gating mechanism to control the information flow:
+\begin{equation}
+  \mathbf{H} = \tanh\left(\mathbf{\Theta}_1 \star_d \mathbf{X} + \mathbf{b}_1\right) \odot \sigma\left(\mathbf{\Theta}_2 \star_d \mathbf{X} + \mathbf{b}_2\right),
+  \label{eq:gate}
+\end{equation}
+where $\star_d$ denotes the dilated convolution with dilation rate $d$ and $\sigma(\cdot)$ is the sigmoid function. With a kernel size of 2 and four layers, the receptive field covers 16 time steps, which is sufficient for an input window of one hour.
+
+\subsection{Training Objective}
+
+The model is trained end-to-end by minimizing the mean absolute error between predictions and ground truth, together with an $\ell_2$ regularization term:
+\begin{equation}
+  \mathcal{L}(\Theta) = \frac{1}{T' N} \sum_{\tau=1}^{T'} \sum_{i=1}^{N} \left| \hat{x}_{t+\tau}^{(i)} - x_{t+\tau}^{(i)} \right| + \lambda \left\| \Theta \right\|_2^2,
+  \label{eq:loss}
+\end{equation}
+where $\Theta$ denotes all learnable parameters and $\lambda$ controls the strength of regularization.
+
+\section{Experiments}
+\label{sec:exp}
+
+\subsection{Datasets}
+
+We evaluate ASTGAT on two widely used public traffic datasets:
+\begin{itemize}
+  \item \textbf{METR-LA} contains traffic speed readings from 207 loop detectors on the highways of Los Angeles County, collected from March to June 2012.
+  \item \textbf{PEMS-BAY} contains traffic speed readings from 325 sensors in the San Francisco Bay Area, collected from January to May 2017.
+\end{itemize}
+Both datasets are aggregated into 5-minute intervals. Following previous work~\cite{li2018dcrnn}, we use 70\% of the data for training, 10\% for validation, and the remaining 20\% for testing. All inputs are normalized with z-score normalization.
+
+\subsection{Experimental Settings}
+
+We use the previous 12 steps (one hour) to predict the next 12 steps. The embedding dimension is set to $d = 10$, the number of attention heads to $M = 4$, and the hidden dimension to 64. The model is optimized with Adam using an initial learning rate of $0.001$ and a batch size of 64 for 100 epochs, with early stopping based on validation loss. We report the mean absolute error (MAE), root mean squared error (RMSE), and mean absolute percentage error (MAPE) at horizons of 15, 30, and 60 minutes.
+
+\subsection{Overall Performance}
+
+Table~\ref{tab:results} compares ASTGAT with representative baselines on METR-LA. Classical methods such as HA and ARIMA perform poorly because they cannot model spatial dependencies. Graph-based deep models substantially reduce the error, and models with learned graphs, such as Graph WaveNet and AGCRN, generally outperform those that rely on a fixed graph. ASTGAT achieves the best results at all horizons, and its advantage grows as the horizon increases: at 60 minutes, it reduces the MAE from 3.53 to 3.29 compared with Graph WaveNet, a relative improvement of 6.8\%.
+
+\begin{table}[t]
+  \centering
+  \caption{Performance comparison on the METR-LA dataset.}
+  \label{tab:results}
+  \begin{tabular}{lccccccccc}
+    \toprule
+    Horizon & \multicolumn{3}{c}{15 min} & \multicolumn{3}{c}{30 min} & \multicolumn{3}{c}{60 min} \\
+    Model & MAE & RMSE & MAPE & MAE & RMSE & MAPE & MAE & RMSE & MAPE \\
+    \midrule
+    HA & 4.16 & 7.80 & 13.00\% & 4.16 & 7.80 & 13.00\% & 4.16 & 7.80 & 13.00\% \\
+    ARIMA & 3.99 & 8.21 & 9.60\% & 5.15 & 10.45 & 12.70\% & 6.90 & 13.23 & 17.40\% \\
+    DCRNN & 2.77 & 5.38 & 7.30\% & 3.15 & 6.45 & 8.80\% & 3.60 & 7.60 & 10.50\% \\
+    STGCN & 2.88 & 5.74 & 7.62\% & 3.47 & 7.24 & 9.57\% & 4.59 & 9.40 & 12.70\% \\
+    Graph WaveNet & 2.69 & 5.15 & 6.90\% & 3.07 & 6.22 & 8.37\% & 3.53 & 7.37 & 10.01\% \\
+    AGCRN & 2.87 & 5.58 & 7.70\% & 3.23 & 6.58 & 9.00\% & 3.62 & 7.51 & 10.38\% \\
+    \midrule
+    ASTGAT (ours) & \textbf{2.61} & \textbf{5.01} & \textbf{6.68\%} & \textbf{2.96} & \textbf{5.98} & \textbf{8.02\%} & \textbf{3.29} & \textbf{6.89} & \textbf{9.35\%} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Ablation Study}
+
+To verify the contribution of each component, we compare ASTGAT with three variants: (1) \emph{w/o AGG}, which replaces the adaptive graph generator with the predefined distance-based graph; (2) \emph{w/o DYN}, which uses the static adaptive matrix in Eq.~\eqref{eq:static} instead of the dynamic one in Eq.~\eqref{eq:dynamic}; and (3) \emph{w/o GATE}, which removes the gating mechanism in Eq.~\eqref{eq:gate}. As shown in Figure~\ref{fig:ablation}, removing any component degrades performance, and the dynamic graph contributes the most at long horizons. This confirms our hypothesis that time-varying spatial correlations are essential for long-term forecasting.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.85\linewidth]{figures/ablation.pdf}
+  \caption{MAE of ASTGAT and its variants on METR-LA at different prediction horizons.}
+  \label{fig:ablation}
+\end{figure}
+
+\subsection{Computational Efficiency}
+
+We also compare the training and inference time of different models on a single GPU. Because ASTGAT replaces recurrent units with parallel convolutions, its training time per epoch is about 3.4 times shorter than that of DCRNN. Generating the dynamic graph introduces only a small overhead, since it requires a single matrix multiplication of size $N \times d$ at each step. Overall, ASTGAT achieves a favorable balance between accuracy and efficiency, which makes it suitable for real-time deployment.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+In this paper, we presented ASTGAT, an adaptive spatio-temporal graph attention network for traffic forecasting. By generating a dynamic graph from node embeddings and the current traffic state, ASTGAT captures latent and time-varying spatial dependencies that a fixed road-network graph cannot express. Combined with gated dilated temporal convolutions, the model efficiently handles long input sequences. Experiments on two real-world datasets demonstrate consistent improvements over state-of-the-art baselines, particularly for long-horizon prediction. In future work, we plan to incorporate external factors such as weather and special events, and to extend the framework to other spatio-temporal tasks such as air-quality and ride-hailing demand forecasting.
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+
+\end{document}
+</script>
+
+<script type="text/plain" id="preset-zh">
+\documentclass[UTF8,12pt]{ctexart}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage[numbers]{natbib}
+
+\title{基于自适应时空图注意力网络的城市交通流量预测研究}
+\author{硕士研究生 \\ 计算机科学与技术学院}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+准确的交通流量预测是智能交通系统的核心环节，对缓解城市拥堵、优化信号配时和辅助出行决策具有重要意义。然而，路网中各路段之间的空间依赖关系复杂且随时间动态变化，交通流本身又呈现出明显的非平稳性，这使得长时预测仍然面临较大挑战。现有基于图神经网络的方法大多依赖由路网距离构造的固定邻接矩阵，难以刻画远距离传感器之间潜在的、时变的相关性。针对上述问题，本文提出一种自适应时空图注意力网络（ASTGAT）。该模型通过可学习的节点嵌入与当前交通状态动态生成邻接矩阵，并结合门控空洞时间卷积同时捕获短期波动与长期周期性。在 METR-LA 和 PEMS-BAY 两个公开数据集上的实验表明，所提方法在各预测步长上均优于现有主流模型，其中 60 分钟预测的平均绝对误差降低了 6.8\%。
+\end{abstract}
+
+\section{引言}
+
+随着城市化进程的不断加快，机动车保有量持续增长，交通拥堵已经成为制约城市发展的突出问题。准确、及时的交通流量预测能够帮助交通管理部门提前制定疏导策略，也能够为出行者提供可靠的路径规划依据，因此一直是交通运输与人工智能领域共同关注的研究热点~\cite{williams2003sarima,li2018dcrnn}。
+
+交通流量预测本质上是一个时空序列预测问题。从空间维度看，某一路段的交通状态会受到其上下游路段的显著影响，拥堵会沿路网以高度非线性的方式传播；从时间维度看，交通流既存在以日、周为单位的周期规律，也会因交通事故、恶劣天气等突发事件产生剧烈波动。传统的自回归积分滑动平均模型（ARIMA）及其季节性变体~\cite{williams2003sarima}以平稳性和线性假设为前提，难以有效刻画上述复杂动态。
+
+近年来，深度学习方法显著提升了交通预测的精度。以长短期记忆网络~\cite{hochreiter1997lstm}为代表的循环神经网络被广泛用于建模时间依赖，而图神经网络~\cite{kipf2017gcn,velickovic2018gat}则为刻画路网这类非欧几里得结构提供了有效工具。DCRNN~\cite{li2018dcrnn}和 STGCN~\cite{yu2018stgcn}等代表性方法将图卷积与序列模型相结合，取得了远超传统方法的预测效果。
+
+尽管如此，现有研究仍存在两方面不足：其一，多数方法依赖预先定义的静态邻接矩阵，无法反映路段间随时间变化的隐含关联；其二，基于循环结构的时间模块存在误差累积和训练效率低的问题，而普通卷积的感受野有限，难以捕获长程周期特征。为此，本文的主要贡献如下：
+\begin{itemize}
+  \item 设计了一种节点自适应图生成器，能够根据节点嵌入与实时交通状态动态生成邻接矩阵，无需路网先验知识；
+  \item 提出了门控空洞时间卷积模块，其感受野随网络深度呈指数增长，可高效建模长输入序列；
+  \item 在两个真实数据集上进行了大量实验，验证了所提方法在长时预测任务上的优越性。
+\end{itemize}
+
+\section{相关工作}
+
+\subsection{交通流量预测}
+
+早期的交通预测研究以统计时间序列模型为主。Williams 和 Hoel~\cite{williams2003sarima}证明了季节性 ARIMA 模型在单点交通预测中的理论合理性，但此类方法将各传感器视为相互独立的序列，忽略了空间相关性。支持向量回归、K 近邻等机器学习方法放宽了线性假设，但仍高度依赖人工特征工程。
+
+深度学习方法能够直接从数据中学习特征表示。Li 等人~\cite{li2018dcrnn}将交通流建模为有向图上的扩散过程，提出了扩散卷积循环神经网络；Yu 等人~\cite{yu2018stgcn}使用全卷积结构替代循环单元，大幅提升了训练速度；Guo 等人~\cite{guo2019astgcn}进一步引入时空注意力机制以刻画动态相关性。
+
+\subsection{图神经网络}
+
+图神经网络将深度学习推广到图结构数据。谱方法在图拉普拉斯矩阵的傅里叶域中定义卷积~\cite{bruna2014spectral}，Defferrard 等人~\cite{defferrard2016cheb}利用切比雪夫多项式近似避免了昂贵的特征分解，Kipf 和 Welling~\cite{kipf2017gcn}在此基础上提出了一阶近似的图卷积网络。图注意力网络~\cite{velickovic2018gat}借鉴 Transformer~\cite{vaswani2017attention}中的自注意力机制，为不同邻居分配不同权重。Graph WaveNet~\cite{wu2019graph}和 AGCRN~\cite{bai2020agcrn}尝试从数据中学习图结构，但所学图在训练完成后即固定不变。
+
+\section{研究方法}
+
+\subsection{问题定义}
+
+将路网表示为图 $\mathcal{G} = (\mathcal{V}, \mathcal{E}, \mathbf{A})$，其中 $\mathcal{V}$ 为 $N$ 个传感器节点构成的集合，$\mathbf{A} \in \mathbb{R}^{N \times N}$ 为加权邻接矩阵。记 $t$ 时刻的观测为 $\mathbf{X}_t \in \mathbb{R}^{N \times C}$，交通预测的目标是学习映射函数 $f$：
+\begin{equation}
+  \left[\mathbf{X}_{t+1}, \ldots, \mathbf{X}_{t+T'}\right] = f\left(\mathbf{X}_{t-T+1}, \ldots, \mathbf{X}_{t}; \mathcal{G}\right).
+\end{equation}
+
+\subsection{自适应图生成器}
+
+为每个节点分配可学习的嵌入向量 $\mathbf{E} \in \mathbb{R}^{N \times d}$，并利用当前输入对其进行调制，从而得到随时间变化的邻接矩阵：
+\begin{equation}
+  \mathbf{E}_t = \mathbf{E} \odot \tanh\left(\mathbf{X}_t \mathbf{W}_e + \mathbf{b}_e\right), \qquad
+  \mathbf{A}_t = \mathrm{softmax}\left(\mathrm{ReLU}\left(\mathbf{E}_t \mathbf{E}_t^{\top}\right)\right).
+  \label{eq:zh-dyn}
+\end{equation}
+其中 ReLU 函数用于剔除弱连接，softmax 函数对每一行进行归一化。基于 $\mathbf{A}_t$，采用 $K$ 阶图卷积聚合多跳邻居信息：
+\begin{equation}
+  \mathbf{Z}_t = \sum_{k=0}^{K} \left(\mathbf{A}_t\right)^{k} \mathbf{X}_t \mathbf{\Theta}_k.
+\end{equation}
+
+\subsection{门控空洞时间卷积}
+
+为高效捕获时间依赖，本文堆叠膨胀率依次为 $1, 2, 4, 8$ 的空洞因果卷积，并在每一层引入门控机制：
+\begin{equation}
+  \mathbf{H} = \tanh\left(\mathbf{\Theta}_1 \star_d \mathbf{X} + \mathbf{b}_1\right) \odot \sigma\left(\mathbf{\Theta}_2 \star_d \mathbf{X} + \mathbf{b}_2\right).
+\end{equation}
+当卷积核大小为 2 且层数为 4 时，模型的感受野可覆盖 16 个时间步，足以处理长度为一小时的输入窗口。
+
+\subsection{损失函数}
+
+模型以端到端方式训练，损失函数由平均绝对误差与 $\ell_2$ 正则项组成：
+\begin{equation}
+  \mathcal{L}(\Theta) = \frac{1}{T' N} \sum_{\tau=1}^{T'} \sum_{i=1}^{N} \left| \hat{x}_{t+\tau}^{(i)} - x_{t+\tau}^{(i)} \right| + \lambda \left\| \Theta \right\|_2^2.
+\end{equation}
+
+\section{实验与分析}
+
+\subsection{数据集与实验设置}
+
+本文在 METR-LA 和 PEMS-BAY 两个公开数据集上开展实验。METR-LA 包含洛杉矶高速公路上 207 个检测器在 2012 年 3 月至 6 月期间采集的车速数据；PEMS-BAY 包含旧金山湾区 325 个传感器在 2017 年 1 月至 5 月期间的车速数据。数据均按 5 分钟间隔聚合，并按 7:1:2 的比例划分训练集、验证集和测试集。模型使用过去 12 个时间步预测未来 12 个时间步，采用 Adam 优化器，初始学习率为 $0.001$，批大小为 64。
+
+\subsection{对比实验}
+
+表~\ref{tab:zh-results}给出了各模型在 METR-LA 数据集上的预测结果。可以看出，HA 和 ARIMA 等传统方法由于无法建模空间依赖，误差明显偏高；基于图的深度模型显著降低了预测误差，而采用可学习图结构的 Graph WaveNet 和 AGCRN 总体优于依赖固定图的模型。本文提出的 ASTGAT 在所有步长上均取得最优结果，且预测步长越长优势越明显。
+
+\begin{table}[t]
+  \centering
+  \caption{不同模型在 METR-LA 数据集上的性能对比}
+  \label{tab:zh-results}
+  \begin{tabular}{lccccccccc}
+    \toprule
+    预测步长 & \multicolumn{3}{c}{15 分钟} & \multicolumn{3}{c}{30 分钟} & \multicolumn{3}{c}{60 分钟} \\
+    模型 & MAE & RMSE & MAPE & MAE & RMSE & MAPE & MAE & RMSE & MAPE \\
+    \midrule
+    HA & 4.16 & 7.80 & 13.00\% & 4.16 & 7.80 & 13.00\% & 4.16 & 7.80 & 13.00\% \\
+    ARIMA & 3.99 & 8.21 & 9.60\% & 5.15 & 10.45 & 12.70\% & 6.90 & 13.23 & 17.40\% \\
+    DCRNN & 2.77 & 5.38 & 7.30\% & 3.15 & 6.45 & 8.80\% & 3.60 & 7.60 & 10.50\% \\
+    STGCN & 2.88 & 5.74 & 7.62\% & 3.47 & 7.24 & 9.57\% & 4.59 & 9.40 & 12.70\% \\
+    Graph WaveNet & 2.69 & 5.15 & 6.90\% & 3.07 & 6.22 & 8.37\% & 3.53 & 7.37 & 10.01\% \\
+    AGCRN & 2.87 & 5.58 & 7.70\% & 3.23 & 6.58 & 9.00\% & 3.62 & 7.51 & 10.38\% \\
+    \midrule
+    ASTGAT（本文） & \textbf{2.61} & \textbf{5.01} & \textbf{6.68\%} & \textbf{2.96} & \textbf{5.98} & \textbf{8.02\%} & \textbf{3.29} & \textbf{6.89} & \textbf{9.35\%} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{消融实验}
+
+为验证各模块的有效性，本文设计了三种变体：去除自适应图生成器的 w/o AGG、使用静态自适应矩阵的 w/o DYN，以及去除门控机制的 w/o GATE。如图~\ref{fig:zh-ablation}所示，去除任一模块都会导致性能下降，其中动态图对长时预测的贡献最大，这说明刻画时变的空间相关性对于长时交通预测至关重要。
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.85\linewidth]{figures/ablation.pdf}
+  \caption{ASTGAT 及其变体在不同预测步长下的 MAE}
+  \label{fig:zh-ablation}
+\end{figure}
+
+\section{结论}
+
+本文提出了一种用于交通流量预测的自适应时空图注意力网络。该模型通过节点嵌入与实时交通状态动态生成图结构，能够刻画固定路网图无法表达的潜在时变空间依赖，并结合门控空洞时间卷积高效处理长输入序列。在两个真实数据集上的实验结果表明，所提方法在各项指标上均优于现有主流模型。未来工作将考虑引入天气、节假日等外部因素，并将该框架推广到空气质量预测、网约车需求预测等其他时空预测任务中。
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+
+\end{document}
+</script>
+
+<script>
+window.MathJax = {
+  startup: { typeset: false, ready() { MathJax.startup.defaultReady(); MathJax.startup.promise.then(() => { window.__mjReady && window.__mjReady(); }); } },
+  svg: { fontCache: 'local' },
+  options: { enableMenu: false }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js" async></script>
+<script>
+(() => {
+'use strict';
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const R = Math.random, rnd = (a, b) => a + R() * (b - a), rint = (a, b) => Math.floor(rnd(a, b + 1));
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const CJK = /[㐀-鿿豈-﫿]/;
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('fakethesis.' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('fakethesis.' + k, JSON.stringify(v)); } catch (e) {} }
+};
+
+/* ---------------- settings ---------------- */
+const DEF = { skin: 'latex', preset: 'en', custom: '', perKey: 3, cps: 22, typo: 4, pause: 5, auto: false, autoCps: 8, sound: true, switchType: 'blue', volume: 55, theme: 'auto', hintSeen: false };
+const S = Object.assign({}, DEF, store.get('settings', {}));
+const saveS = () => store.set('settings', S);
+
+/* ---------------- icons ---------------- */
+const ICONS = {
+  menu: 'M4 6h16M4 12h16M4 18h16', home: 'M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z',
+  pen: 'M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z',
+  share: 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M13 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0M19 8v6M22 11h-6',
+  upload: 'M12 15V3M7 8l5-5 5 5M5 21h14', clock: 'M12 7v5l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0',
+  cols: 'M3 4h18v16H3zM12 4v16', chat: 'M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z',
+  file: 'M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8zM14 3v5h5',
+  folder: 'M3 6a1 1 0 0 1 1-1h5l2 2h8a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z',
+  filePlus: 'M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8zM14 3v5h5M12 11v6M9 14h6',
+  folderPlus: 'M3 6a1 1 0 0 1 1-1h5l2 2h8a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1zM12 10v6M9 13h6',
+  image: 'M4 4h16v16H4zM4 16l5-5 4 4 3-3 4 4M10 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0',
+  undo: 'M9 14L4 9l5-5M4 9h11a5 5 0 0 1 0 10h-3', redo: 'M15 14l5-5-5-5M20 9H9a5 5 0 0 0 0 10h3',
+  bold: 'M7 5h6a3.5 3.5 0 0 1 0 7H7zM7 12h7a3.5 3.5 0 0 1 0 7H7z', italic: 'M19 4h-9M14 20H5M15 4L9 20',
+  under: 'M6 4v6a6 6 0 0 0 12 0V4M4 21h16', sigma: 'M18 4H6l6 8-6 8h12',
+  link: 'M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1',
+  list: 'M9 6h12M9 12h12M9 18h12M4 6h.01M4 12h.01M4 18h.01', olist: 'M10 6h11M10 12h11M10 18h11M4 6h1v4M4 10h2M6 18H4c0-1 2-2 2-3s-1-1.5-2-1',
+  indent: 'M3 6h18M11 12h10M11 18h10M3 10l4 3-4 3z',
+  alignL: 'M3 6h18M3 12h12M3 18h16', alignC: 'M3 6h18M6 12h12M4 18h16', alignR: 'M3 6h18M9 12h12M5 18h16', alignJ: 'M3 6h18M3 12h18M3 18h18',
+  search: 'M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM21 21l-5-5', replace: 'M4 7h12l-3-3M20 17H8l3 3',
+  refresh: 'M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5', chev: 'M6 9l6 6 6-6',
+  download: 'M12 3v12M7 10l5 5 5-5M5 21h14', doc: 'M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8zM14 3v5h5M9 13h6M9 17h4',
+  save: 'M5 3h11l5 5v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM7 3v5h8M7 21v-7h10v7',
+  paste: 'M9 3h6v3H9zM9 4.5H6a1 1 0 0 0-1 1V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V5.5a1 1 0 0 0-1-1h-3',
+  cloud: 'M17.5 19H7a5 5 0 1 1 1-9.9A6 6 0 0 1 19.5 11a4 4 0 0 1-2 8zM9 14l2 2 4-4'
+};
+const svgIcon = n => `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="${ICONS[n] || ''}"/></svg>`;
+$$('[data-i]').forEach(el => el.insertAdjacentHTML('afterbegin', svgIcon(el.dataset.i)));
+
+/* ---------------- content ---------------- */
+const PRESET = {
+  en: $('#preset-en').textContent.replace(/^\s*\n/, ''),
+  zh: $('#preset-zh').textContent.replace(/^\s*\n/, '')
+};
+const LEGEND = ['ASTGAT', 'w/o DYN', 'w/o AGG', 'w/o GATE'];
+const BIB = {
+  williams2003sarima: 'B. M. Williams and L. A. Hoel. Modeling and forecasting vehicular traffic flow as a seasonal ARIMA process: Theoretical basis and empirical results. Journal of Transportation Engineering, 129(6):664–672, 2003.',
+  li2018dcrnn: 'Y. Li, R. Yu, C. Shahabi, and Y. Liu. Diffusion convolutional recurrent neural network: Data-driven traffic forecasting. In International Conference on Learning Representations (ICLR), 2018.',
+  yu2018stgcn: 'B. Yu, H. Yin, and Z. Zhu. Spatio-temporal graph convolutional networks: A deep learning framework for traffic forecasting. In Proceedings of IJCAI, pages 3634–3640, 2018.',
+  hochreiter1997lstm: 'S. Hochreiter and J. Schmidhuber. Long short-term memory. Neural Computation, 9(8):1735–1780, 1997.',
+  kipf2017gcn: 'T. N. Kipf and M. Welling. Semi-supervised classification with graph convolutional networks. In International Conference on Learning Representations (ICLR), 2017.',
+  velickovic2018gat: 'P. Veličković, G. Cucurull, A. Casanova, A. Romero, P. Liò, and Y. Bengio. Graph attention networks. In International Conference on Learning Representations (ICLR), 2018.',
+  guo2019astgcn: 'S. Guo, Y. Lin, N. Feng, C. Song, and H. Wan. Attention based spatial-temporal graph convolutional networks for traffic flow forecasting. In Proceedings of AAAI, pages 922–929, 2019.',
+  zheng2020gman: 'C. Zheng, X. Fan, C. Wang, and J. Qi. GMAN: A graph multi-attention network for traffic prediction. In Proceedings of AAAI, pages 1234–1241, 2020.',
+  bruna2014spectral: 'J. Bruna, W. Zaremba, A. Szlam, and Y. LeCun. Spectral networks and locally connected networks on graphs. In International Conference on Learning Representations (ICLR), 2014.',
+  defferrard2016cheb: 'M. Defferrard, X. Bresson, and P. Vandergheynst. Convolutional neural networks on graphs with fast localized spectral filtering. In Advances in Neural Information Processing Systems (NeurIPS), pages 3844–3852, 2016.',
+  vaswani2017attention: 'A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, Ł. Kaiser, and I. Polosukhin. Attention is all you need. In Advances in Neural Information Processing Systems (NeurIPS), pages 5998–6008, 2017.',
+  wu2019graph: 'Z. Wu, S. Pan, G. Long, J. Jiang, and C. Zhang. Graph WaveNet for deep spatial-temporal graph modeling. In Proceedings of IJCAI, pages 1907–1913, 2019.',
+  bai2020agcrn: 'L. Bai, L. Yao, C. Li, X. Wang, and C. Wang. Adaptive graph convolutional recurrent network for traffic forecasting. In Advances in Neural Information Processing Systems (NeurIPS), 2020.'
+};
+function getSrc() {
+  let s = (S.preset === 'custom' && S.custom.trim()) ? S.custom : (PRESET[S.preset] || PRESET.en);
+  return s.replace(/\r\n?/g, '\n').replace(/\t/g, '  ');
+}
+const srcKey = src => S.preset + ':' + src.length;
+
+/* ---------------- math rendering ---------------- */
+let mjReady = false;
+const mcache = new Map();
+function mathHTML(tex, display) {
+  const key = (display ? 'D' : 'I') + tex;
+  if (mcache.has(key)) return mcache.get(key);
+  if (mjReady) {
+    try {
+      const html = MathJax.tex2svg(tex, { display }).outerHTML;
+      mcache.set(key, html);
+      return html;
+    } catch (e) { /* fall through */ }
+  }
+  return `<span class="texfb${display ? ' d' : ''}">${esc(tex)}</span>`;
+}
+
+/* ---------------- LaTeX helpers ---------------- */
+function readGroup(s, j) {
+  let d = 0;
+  for (let i = j; i < s.length; i++) {
+    const c = s[i];
+    if (c === '\\') { i++; continue; }
+    if (c === '{') d++;
+    else if (c === '}') { d--; if (d === 0) return { text: s.slice(j + 1, i), end: i + 1, closed: true }; }
+  }
+  return { text: s.slice(j + 1), end: s.length, closed: false };
+}
+function grabCmd(s, name) {
+  const m = new RegExp('\\\\' + name + '\\*?\\s*(\\[[^\\]]*\\])?\\{').exec(s);
+  if (!m) return null;
+  return readGroup(s, m.index + m[0].length - 1).text;
+}
+function stripComment(l) {
+  let out = '';
+  for (let i = 0; i < l.length; i++) {
+    const c = l[i];
+    if (c === '\\') { out += c + (l[i + 1] || ''); i++; continue; }
+    if (c === '%') break;
+    out += c;
+  }
+  return out;
+}
+const escRe = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const MATHENV = /^(equation|align|gather|multline|eqnarray|displaymath)\*?$/;
+
+function collectEnv(lines, li, env) {
+  const b = '\\begin{' + env + '}', e = '\\end{' + env + '}';
+  const re = new RegExp(escRe(b) + '|' + escRe(e), 'g');
+  let depth = 0; const acc = [];
+  for (let j = li; j < lines.length; j++) {
+    const L = stripComment(lines[j]);
+    let out = '', last = 0, m; re.lastIndex = 0;
+    while ((m = re.exec(L))) {
+      if (m[0] === b) {
+        depth++;
+        out += depth > 1 ? L.slice(last, re.lastIndex) : L.slice(last, m.index);
+        last = re.lastIndex;
+      } else {
+        depth--;
+        if (depth === 0) { out += L.slice(last, m.index); acc.push(out); return { inner: acc.join('\n'), endLi: j, found: true }; }
+        out += L.slice(last, re.lastIndex); last = re.lastIndex;
+      }
+    }
+    acc.push(out + L.slice(last));
+  }
+  return { inner: acc.join('\n'), endLi: lines.length - 1, found: false };
+}
+function parseRows(body) {
+  const out = []; let rule = false;
+  for (const chunk of body.split(/\\\\(?:\[[^\]]*\])?/)) {
+    const has = /\\(midrule|hline|cmidrule)/.test(chunk);
+    const c = chunk.replace(/\\(toprule|midrule|bottomrule|hline)(\[[^\]]*\])?/g, '').replace(/\\cmidrule(\([^)]*\))?\{[^}]*\}/g, '').trim();
+    if (!c) { if (has && out.length) rule = true; continue; }
+    out.push({ cells: c.split(/(?<!\\)&/).map(x => x.trim()), rule: (has || rule) && out.length > 0 });
+    rule = false;
+  }
+  return out;
+}
+function envBlock(env, inner, src) {
+  const base = env.replace('*', '');
+  if (MATHENV.test(env)) {
+    const label = grabCmd(inner, 'label');
+    let tex = inner.replace(/\\label\{[^}]*\}/g, '').replace(/\\nonumber|\\notag/g, '').trim();
+    if (/^(align|eqnarray)$/.test(base)) tex = '\\begin{aligned}' + tex + '\\end{aligned}';
+    else if (base === 'gather' || base === 'multline') tex = '\\begin{gathered}' + tex + '\\end{gathered}';
+    return { t: 'eq', tex, label, numbered: !env.endsWith('*') && base !== 'displaymath', src };
+  }
+  if (base === 'abstract') return { t: 'abstract', tex: inner, src };
+  if (base === 'itemize' || base === 'enumerate' || base === 'description') {
+    const items = inner.split(/\\item\b(?:\s*\[[^\]]*\])?/).slice(1).map(s => s.trim()).filter(Boolean);
+    return { t: 'list', ordered: base === 'enumerate', items, src };
+  }
+  if (base === 'table') {
+    let rows = [];
+    const bi = inner.search(/\\begin\{tabular\*?\}/);
+    if (bi >= 0) {
+      let j = inner.indexOf('}', bi) + 1;
+      const star = inner.slice(bi, j).includes('*');
+      while (/\s/.test(inner[j] || '')) j++;
+      if (inner[j] === '[') { const k = inner.indexOf(']', j); if (k > 0) j = k + 1; }
+      for (let c = 0; c < (star ? 2 : 1); c++) { while (/\s/.test(inner[j] || '')) j++; if (inner[j] === '{') j = readGroup(inner, j).end; }
+      const ei = inner.indexOf('\\end{tabular', j);
+      rows = parseRows(inner.slice(j, ei < 0 ? inner.length : ei));
+    }
+    return { t: 'table', caption: grabCmd(inner, 'caption') || '', label: grabCmd(inner, 'label'), rows, src };
+  }
+  if (base === 'figure') return { t: 'figure', caption: grabCmd(inner, 'caption') || '', label: grabCmd(inner, 'label'), src };
+  if (base === 'document') return null;
+  const tex = inner.replace(/^\s*(\[[^\]]*\])?/, '').trim();
+  return tex ? { t: 'p', tex, src } : null;
+}
+
+function parseDoc(src, partial) {
+  const lines = src.split('\n'), offs = [];
+  let o = 0; for (const l of lines) { offs.push(o); o += l.length + 1; }
+  let body = !src.includes('\\begin{document}');
+  const meta = { title: '', author: '', date: '' }, blocks = [];
+  let para = null;
+  const flush = () => { if (para) { if (para.tex.trim()) blocks.push({ t: 'p', tex: para.tex, src: para.src }); para = null; } };
+  for (let li = 0; li < lines.length; li++) {
+    const line = stripComment(lines[li]), tr = line.trim(), off = offs[li];
+    let m;
+    if (/^\\(title|author|date)\b/.test(tr)) {
+      for (const k of ['title', 'author', 'date']) { const v = grabCmd(tr, k); if (v != null) meta[k] = v; }
+      continue;
+    }
+    if (!body) { if (tr.includes('\\begin{document}')) body = true; continue; }
+    if (tr.startsWith('\\end{document}')) { flush(); break; }
+    if (!tr) { flush(); continue; }
+    if (/^\\maketitle\b/.test(tr)) { flush(); blocks.push({ t: 'title', src: off }); continue; }
+    if ((m = tr.match(/^\\(chapter|section|subsection|subsubsection|paragraph)(\*?)\s*\{/))) {
+      flush();
+      const g = readGroup(tr, m[0].length - 1);
+      const t = { chapter: 'section', section: 'section', subsection: 'subsection', subsubsection: 'subsubsection', paragraph: 'subsubsection' }[m[1]];
+      blocks.push({ t, star: !!m[2] || m[1] === 'paragraph', tex: g.text, label: grabCmd(tr.slice(g.end), 'label'), src: off });
+      continue;
+    }
+    if ((m = tr.match(/^\\label\{([^}]*)\}\s*$/))) {
+      const lb = blocks[blocks.length - 1];
+      if (!para && lb && !lb.label) lb.label = m[1];
+      continue;
+    }
+    if (tr.startsWith('\\[')) {
+      flush();
+      let acc = tr.slice(2), j = li, found = acc.includes('\\]');
+      while (!found && j + 1 < lines.length) { j++; const L = stripComment(lines[j]); acc += '\n' + L; if (L.includes('\\]')) found = true; }
+      if (!found && partial) break;
+      li = j; blocks.push({ t: 'eq', tex: acc.split('\\]')[0], numbered: false, src: off });
+      continue;
+    }
+    if ((m = tr.match(/^\\begin\{([^}]+)\}/))) {
+      flush();
+      const r = collectEnv(lines, li, m[1]);
+      if (!r.found && partial) {
+        // an unfinished prose environment still shows up in the preview; unfinished math/floats do not
+        if (!MATHENV.test(m[1]) && !/^(table|figure|tabular)\*?$/.test(m[1])) { const b = envBlock(m[1], r.inner, off); if (b) blocks.push(b); }
+        break;
+      }
+      li = r.endLi;
+      const b = envBlock(m[1], r.inner, off);
+      if (b) blocks.push(b);
+      continue;
+    }
+    if (/^\\bibliography\{/.test(tr)) { flush(); blocks.push({ t: 'refs', src: off }); continue; }
+    if (/^\\(bibliographystyle|centering|newpage|clearpage|vspace\*?|tableofcontents|usepackage|noindent|hline|medskip|bigskip|smallskip)(\[[^\]]*\]|\{[^}]*\})*\s*$/.test(tr)) continue;
+    if (!para) para = { tex: '', src: off };
+    para.tex += line + '\n';
+  }
+  flush();
+  return { blocks, meta };
+}
+
+function makeCtx(blocks, lang) {
+  const ctx = { labels: {}, citeMap: new Map(), lang };
+  let s = 0, ss = 0, sss = 0, eq = 0, tab = 0, fig = 0;
+  for (const b of blocks) {
+    if (b.t === 'section') { if (!b.star) { s++; ss = 0; sss = 0; b.num = String(s); } }
+    else if (b.t === 'subsection') { if (!b.star) { ss++; sss = 0; b.num = s + '.' + ss; } }
+    else if (b.t === 'subsubsection') { if (!b.star) { sss++; b.num = s + '.' + ss + '.' + sss; } }
+    else if (b.t === 'eq' && b.numbered) { eq++; b.num = String(eq); }
+    else if (b.t === 'table') { tab++; b.num = String(tab); }
+    else if (b.t === 'figure') { fig++; b.num = String(fig); }
+    if (b.label && b.num) ctx.labels[b.label] = b.num;
+  }
+  ctx.cite = key => { if (!ctx.citeMap.has(key)) ctx.citeMap.set(key, ctx.citeMap.size + 1); return ctx.citeMap.get(key); };
+  return ctx;
+}
+
+let LANG = 'en';
+function todayStr() {
+  const d = new Date();
+  if (LANG === 'zh') return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`;
+  return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+const CJKP = /([㐀-鿿　-〿＀-￯])\s+(?=[㐀-鿿　-〿＀-￯])/g;
+function tokenize(s, style = {}, out = []) {
+  let i = 0, buf = '';
+  const push = () => { if (buf) { out.push({ k: 't', text: buf.replace(CJKP, '$1'), b: !!style.b, i: !!style.i, tt: !!style.tt }); buf = ''; } };
+  while (i < s.length) {
+    const c = s[i];
+    if (c === '$') {
+      const dbl = s[i + 1] === '$', start = i + (dbl ? 2 : 1);
+      let end = s.indexOf(dbl ? '$$' : '$', start);
+      while (end > 0 && s[end - 1] === '\\') end = s.indexOf('$', end + 1);
+      if (end < 0) { i = s.length; break; }
+      push(); out.push({ k: 'm', tex: s.slice(start, end) }); i = end + (dbl ? 2 : 1); continue;
+    }
+    if (c === '\\') {
+      const n = s[i + 1];
+      if (n === undefined) { i++; continue; }
+      if (!/[a-zA-Z]/.test(n)) {
+        if (n === '(') { const end = s.indexOf('\\)', i + 2); if (end < 0) { i = s.length; break; } push(); out.push({ k: 'm', tex: s.slice(i + 2, end) }); i = end + 2; continue; }
+        if (n === '\\' || n === ',' || n === ' ' || n === ';' || n === '!') { if (!buf.endsWith(' ') && n !== '!') buf += n === '\\' ? ' ' : ' '; i += 2; continue; }
+        buf += n; i += 2; continue;
+      }
+      let j = i + 1; while (j < s.length && /[a-zA-Z]/.test(s[j])) j++;
+      const name = s.slice(i + 1, j);
+      if (s[j] === '*') j++;
+      if (s[j] === '[') { const k = s.indexOf(']', j); if (k > 0) j = k + 1; }
+      while (s[j] === ' ' && s[j + 1] === '{') j++;
+      const arg = s[j] === '{' ? readGroup(s, j) : null;
+      const after = arg ? arg.end : j;
+      switch (name) {
+        case 'cite': case 'citep': case 'citet': case 'citealp': case 'citeauthor':
+          if (arg) { push(); out.push({ k: 'c', keys: arg.text.split(',').map(x => x.trim()).filter(Boolean) }); } i = after; continue;
+        case 'ref': case 'eqref': case 'autoref': case 'cref': case 'Cref':
+          if (arg) { push(); out.push({ k: 'r', key: arg.text.trim(), eq: name === 'eqref' }); } i = after; continue;
+        case 'textbf': case 'textit': case 'emph': case 'texttt': case 'textsc': case 'underline': case 'textrm': case 'textsf':
+          if (arg) { push(); tokenize(arg.text, { b: style.b || name === 'textbf', i: style.i || name === 'textit' || name === 'emph', tt: style.tt || name === 'texttt' }, out); } i = after; continue;
+        case 'label': case 'footnote': case 'index': case 'vspace': case 'hspace': case 'includegraphics': case 'centering': case 'noindent':
+          i = after; continue;
+        case 'LaTeX': buf += 'LaTeX'; i = j; continue;
+        case 'TeX': buf += 'TeX'; i = j; continue;
+        case 'ldots': case 'dots': buf += '…'; i = j; continue;
+        case 'today': buf += todayStr(); i = j; continue;
+        case 'quad': case 'qquad': buf += ' '; i = j; continue;
+        default:
+          if (arg) { push(); tokenize(arg.text, style, out); }
+          i = after; continue;
+      }
+    }
+    if (c === '{' || c === '}') { i++; continue; }
+    if (c === '~') { buf += ' '; i++; continue; }
+    if (c === '-' && s[i + 1] === '-') { if (s[i + 2] === '-') { buf += '—'; i += 3; } else { buf += '–'; i += 2; } continue; }
+    if (c === '`' && s[i + 1] === '`') { buf += '“'; i += 2; continue; }
+    if (c === "'" && s[i + 1] === "'") { buf += '”'; i += 2; continue; }
+    if (c === '`') { buf += '‘'; i++; continue; }
+    if (/\s/.test(c)) { if (!buf.endsWith(' ') && (buf || !out.length || out[out.length - 1].k !== 't' || !out[out.length - 1].text.endsWith(' '))) buf += ' '; i++; continue; }
+    buf += c; i++;
+  }
+  push();
+  return out;
+}
+function inlineHTML(tex, ctx) {
+  let h = '';
+  for (const t of tokenize(tex)) {
+    if (t.k === 't') { let x = esc(t.text); if (t.tt) x = `<code>${x}</code>`; if (t.i) x = `<i>${x}</i>`; if (t.b) x = `<b>${x}</b>`; h += x; }
+    else if (t.k === 'm') h += mathHTML(t.tex, false);
+    else if (t.k === 'c') h += `<span class="cite">[${t.keys.map(ctx.cite).join(', ')}]</span>`;
+    else if (t.k === 'r') { const n = ctx.labels[t.key] || '??'; h += `<span class="cite">${t.eq ? '(' + n + ')' : n}</span>`; }
+  }
+  return h.trim();
+}
+function chartSVG(lang) {
+  const xs = [15, 30, 45, 60], base = [2.61, 2.96, 3.15, 3.29];
+  const inc = [[0, 0, 0, 0], [.03, .08, .15, .24], [.06, .12, .17, .21], [.02, .05, .08, .11]];
+  const cols = ['#1f4e9c', '#c0392b', '#2e8b57', '#d4880f'];
+  const X0 = 50, X1 = 344, Y0 = 182, Y1 = 14, ymin = 2.5, ymax = 3.6;
+  const sx = v => X0 + 18 + (v - 15) / 45 * (X1 - X0 - 36), sy = v => Y0 - (v - ymin) / (ymax - ymin) * (Y0 - Y1);
+  let g = `<rect x="${X0}" y="${Y1}" width="${X1 - X0}" height="${Y0 - Y1}" fill="none" stroke="currentColor" stroke-width=".8"/>`;
+  for (let v = 2.6; v <= 3.61; v += 0.2) {
+    const y = sy(v).toFixed(1);
+    g += `<line x1="${X0}" x2="${X1}" y1="${y}" y2="${y}" stroke="currentColor" stroke-opacity=".12" stroke-width=".6"/><line x1="${X0}" x2="${X0 + 4}" y1="${y}" y2="${y}" stroke="currentColor" stroke-width=".8"/><text x="${X0 - 5}" y="${(+y + 3).toFixed(1)}" text-anchor="end" fill="currentColor">${v.toFixed(1)}</text>`;
+  }
+  xs.forEach(x => { const X = sx(x).toFixed(1); g += `<line x1="${X}" x2="${X}" y1="${Y0}" y2="${Y0 - 4}" stroke="currentColor" stroke-width=".8"/><text x="${X}" y="${Y0 + 13}" text-anchor="middle" fill="currentColor">${x}</text>`; });
+  inc.forEach((d, k) => {
+    const pts = xs.map((x, i) => [sx(x), sy(base[i] + d[i])]);
+    g += `<polyline points="${pts.map(p => p.map(n => n.toFixed(1)).join(',')).join(' ')}" fill="none" stroke="${cols[k]}" stroke-width="1.6"${k ? ` stroke-dasharray="${['', '5 3', '2 2', '7 2 2 2'][k]}"` : ''}/>`;
+    pts.forEach(([x, y]) => {
+      if (k === 0) g += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.8" fill="${cols[k]}"/>`;
+      else if (k === 1) g += `<rect x="${(x - 2.6).toFixed(1)}" y="${(y - 2.6).toFixed(1)}" width="5.2" height="5.2" fill="${cols[k]}"/>`;
+      else if (k === 2) g += `<path d="M${x.toFixed(1)} ${(y - 3.2).toFixed(1)}l3 5.4h-6z" fill="${cols[k]}"/>`;
+      else g += `<path d="M${x.toFixed(1)} ${(y - 3.4).toFixed(1)}l3.2 3.4-3.2 3.4-3.2-3.4z" fill="${cols[k]}"/>`;
+    });
+  });
+  LEGEND.forEach((name, k) => { const y = Y1 + 14 + k * 13; g += `<line x1="${X0 + 10}" x2="${X0 + 30}" y1="${y - 3}" y2="${y - 3}" stroke="${cols[k]}" stroke-width="1.6"${k ? ` stroke-dasharray="${['', '5 3', '2 2', '7 2 2 2'][k]}"` : ''}/><text x="${X0 + 35}" y="${y}" fill="currentColor">${esc(name)}</text>`; });
+  g += `<text x="${(X0 + X1) / 2}" y="${Y0 + 28}" text-anchor="middle" fill="currentColor">${lang === 'zh' ? '预测步长（分钟）' : 'Prediction horizon (min)'}</text>`;
+  g += `<text transform="translate(14 ${(Y0 + Y1) / 2}) rotate(-90)" text-anchor="middle" fill="currentColor">MAE</text>`;
+  return `<svg viewBox="0 0 360 216" xmlns="http://www.w3.org/2000/svg" font-family="STIX Two Text, Times New Roman, serif" font-size="10" role="img" aria-label="Ablation results chart">${g}</svg>`;
+}
+function refsList(ctx) {
+  return [...ctx.citeMap.entries()].map(([k, n]) => `<li value="${n}">${esc(BIB[k] || k)}</li>`).join('');
+}
+function blockHTML(b, ctx, meta) {
+  const zh = ctx.lang === 'zh';
+  switch (b.t) {
+    case 'title': {
+      const auth = (meta.author || '').split(/\\\\/).map(a => inlineHTML(a, ctx)).filter(Boolean).join('<br>');
+      const date = meta.date ? inlineHTML(meta.date, ctx) : '';
+      return `<div class="p-title"><h1>${inlineHTML(meta.title || '', ctx)}</h1><div class="p-author">${auth}</div>${date ? `<div class="p-date">${date}</div>` : ''}</div>`;
+    }
+    case 'abstract':
+      return `<div class="p-abs"><div class="p-abs-h">${zh ? '摘要' : 'Abstract'}</div>${b.tex.split(/\n\s*\n/).filter(x => x.trim()).map(x => `<p>${inlineHTML(x, ctx)}</p>`).join('')}</div>`;
+    case 'section': case 'subsection': case 'subsubsection': {
+      const tag = { section: 'h2', subsection: 'h3', subsubsection: 'h4' }[b.t];
+      return `<${tag}>${b.num ? `<span class="num">${b.num}</span>` : ''}${inlineHTML(b.tex, ctx)}</${tag}>`;
+    }
+    case 'p': return `<p>${inlineHTML(b.tex, ctx)}</p>`;
+    case 'list': {
+      const tag = b.ordered ? 'ol' : 'ul';
+      return `<${tag}>${b.items.map(it => `<li>${inlineHTML(it, ctx)}</li>`).join('')}</${tag}>`;
+    }
+    case 'eq':
+      return `<div class="p-eq"><div class="eqb">${mathHTML(b.tex, true)}</div>${b.num ? `<span class="eqn">(${b.num})</span>` : ''}</div>`;
+    case 'table': {
+      const rows = b.rows;
+      let hdr = rows.findIndex((r, i) => i > 0 && r.rule);
+      if (hdr < 0) hdr = rows.length > 1 ? 1 : 0;
+      const cell = (c, tag) => {
+        const m = c.match(/^\\multicolumn\{(\d+)\}\{[^}]*\}\{([\s\S]*)\}$/);
+        return m ? `<${tag} colspan="${m[1]}">${inlineHTML(m[2], ctx)}</${tag}>` : `<${tag}>${inlineHTML(c, ctx)}</${tag}>`;
+      };
+      const tr = (r, tag) => `<tr${r.rule ? ' class="rule"' : ''}>${r.cells.map(c => cell(c, tag)).join('')}</tr>`;
+      const cap = `${zh ? '表' : 'Table'} ${b.num}${zh ? '　' : ': '}${inlineHTML(b.caption, ctx)}`;
+      return `<figure class="p-tab"><figcaption>${cap}</figcaption><table><thead>${rows.slice(0, hdr).map(r => tr(r, 'th')).join('')}</thead><tbody>${rows.slice(hdr).map(r => tr(r, 'td')).join('')}</tbody></table></figure>`;
+    }
+    case 'figure': {
+      const cap = `${zh ? '图' : 'Figure'} ${b.num}${zh ? '　' : ': '}${inlineHTML(b.caption, ctx)}`;
+      return `<figure class="p-fig">${chartSVG(ctx.lang)}<figcaption>${cap}</figcaption></figure>`;
+    }
+    case 'refs':
+      return `<div><h2>${zh ? '参考文献' : 'References'}</h2><ol class="p-refs">${refsList(ctx)}</ol></div>`;
+  }
+  return '';
+}
+
+/* ---------------- prose mask (where typos look natural) ---------------- */
+function proseMask(src) {
+  const m = new Uint8Array(src.length);
+  let i = 0, math = false, envMath = 0;
+  const SKIP = /^(cite|citep|citet|ref|eqref|label|usepackage|documentclass|bibliography|bibliographystyle|includegraphics|input|url|href|begin|end)$/;
+  while (i < src.length) {
+    const c = src[i];
+    if (c === '%' && src[i - 1] !== '\\') { while (i < src.length && src[i] !== '\n') i++; continue; }
+    if (c === '\\') {
+      let j = i + 1; while (j < src.length && /[a-zA-Z@]/.test(src[j])) j++;
+      if (j === i + 1) j++;
+      const name = src.slice(i + 1, j);
+      if (src[j] === '*') j++;
+      if ((name === 'begin' || name === 'end') && src[j] === '{') {
+        const k = src.indexOf('}', j); if (k < 0) break;
+        if (MATHENV.test(src.slice(j + 1, k))) envMath += name === 'begin' ? 1 : -1;
+        i = k + 1; continue;
+      }
+      if (name === '[') envMath++;
+      if (name === ']') envMath = Math.max(0, envMath - 1);
+      if (SKIP.test(name)) {
+        while (src[j] === '[') { const k = src.indexOf(']', j); if (k < 0) break; j = k + 1; }
+        if (src[j] === '{') { const k = src.indexOf('}', j); j = k < 0 ? src.length : k + 1; }
+      }
+      i = j; continue;
+    }
+    if (c === '$') { math = !math; i++; continue; }
+    if (!math && envMath <= 0 && /[A-Za-z㐀-鿿]/.test(c)) m[i] = 1;
+    i++;
+  }
+  return m;
+}
+const ROWS = ['qwertyuiop', 'asdfghjkl', 'zxcvbnm'];
+const CJK_TYPO = '的一是在不了有和人这中大为上个国我以要他时来用们生到作地于出就分对成会可主发年动同工也能下过子说产种面而方后多定行学法所民得经之进着等部度家电力里如水化高自理起小物现实加量都两体制机当使点从业本去把性好应开它合还因由其些然前外天政四日那社义事平形相全表间样与关各重新线内数正心反你明看原又么利比或但质气第向道命此变条只没结解问意建月公无系';
+function wrongChar(ch) {
+  if (CJK.test(ch)) return CJK_TYPO[Math.floor(R() * CJK_TYPO.length)];
+  const lo = ch.toLowerCase();
+  for (const row of ROWS) {
+    const k = row.indexOf(lo);
+    if (k >= 0) {
+      const opts = [row[k - 1], row[k + 1]].filter(Boolean);
+      const w = opts[Math.floor(R() * opts.length)] || lo;
+      return ch === lo ? w : w.toUpperCase();
+    }
+  }
+  return 'e';
+}
+function countWords(t) {
+  const cj = (t.match(/[㐀-鿿]/g) || []).length;
+  const en = (t.replace(/[㐀-鿿]/g, ' ').match(/[A-Za-z0-9]+(?:['’\-][A-Za-z0-9]+)*/g) || []).length;
+  return cj + en;
+}
+function countWordsTex(t) {
+  const bd = t.indexOf('\\begin{document}');
+  if (bd >= 0) t = t.slice(bd + 16);
+  t = t.replace(/%.*$/gm, '').replace(/\$[^$]*\$/g, ' ')
+    .replace(/\\(begin|end|label|ref|eqref|cite\w*|usepackage|documentclass|bibliography\w*|includegraphics)\*?(\[[^\]]*\])?\{[^}]*\}/g, ' ')
+    .replace(/\\[a-zA-Z]+\*?/g, ' ');
+  return countWords(t);
+}
+const fmt = n => n.toLocaleString('en-US');
+
+/* ---------------- LaTeX syntax highlighting ---------------- */
+const SEC = /^\\(part|chapter|section|subsection|subsubsection|paragraph|title|maketitle)\*?$/;
+function hl(line, st) {
+  let out = '', i = 0, menv = st.m, inl = false;
+  while (i < line.length) {
+    const c = line[i];
+    if (c === '%') { out += `<span class="t-cm">${esc(line.slice(i))}</span>`; break; }
+    if (c === '\\') {
+      let j = i + 1; while (j < line.length && /[a-zA-Z@]/.test(line[j])) j++;
+      if (j === i + 1 && j < line.length) j++;
+      if (line[j] === '*') j++;
+      const name = line.slice(i + 1, j).replace('*', '');
+      if ((name === 'begin' || name === 'end') && line[j] === '{') {
+        const k = line.indexOf('}', j), env = k > 0 ? line.slice(j + 1, k) : line.slice(j + 1);
+        out += `<span class="t-cmd">\\${name}</span><span class="t-br">{</span><span class="t-env">${esc(env)}</span>${k > 0 ? '<span class="t-br">}</span>' : ''}`;
+        if (k > 0 && MATHENV.test(env)) menv = name === 'begin';
+        i = k > 0 ? k + 1 : line.length; continue;
+      }
+      const cls = (menv || inl) ? 't-mcmd' : SEC.test('\\' + name) ? 't-sec' : 't-cmd';
+      out += `<span class="${cls}">${esc(line.slice(i, j))}</span>`; i = j; continue;
+    }
+    if (c === '$') { inl = !inl; out += '<span class="t-math">$</span>'; i++; continue; }
+    if ('{}[]'.includes(c)) { out += `<span class="t-br">${c}</span>`; i++; continue; }
+    let j = i; while (j < line.length && !'\\%${}[]'.includes(line[j])) j++;
+    const t = esc(line.slice(i, j));
+    out += (menv || inl) ? `<span class="t-math">${t}</span>` : t; i = j;
+  }
+  return { html: out, end: { m: menv } };
+}
+
+/* ---------------- autocomplete popup ---------------- */
+const CMDS = [['section', '{}'], ['subsection', '{}'], ['subsubsection', '{}'], ['begin', '{}'], ['end', '{}'], ['cite', '{}'], ['citep', '{}'], ['citet', '{}'], ['ref', '{}'], ['eqref', '{}'], ['label', '{}'], ['textbf', '{}'], ['textit', '{}'], ['emph', '{}'], ['mathbf', '{}'], ['mathcal', '{}'], ['mathbb', '{}'], ['mathrm', '{}'], ['frac', '{}{}'], ['sum', ''], ['left', ''], ['right', ''], ['item', ''], ['caption', '{}'], ['centering', ''], ['includegraphics', '[]{}'], ['toprule', ''], ['midrule', ''], ['bottomrule', ''], ['multicolumn', '{}{}{}'], ['tanh', ''], ['times', ''], ['top', ''], ['tilde', '{}'], ['hat', '{}'], ['alpha', ''], ['sigma', ''], ['odot', ''], ['exp', ''], ['ldots', ''], ['qquad', ''], ['lambda', ''], ['bibliography', '{}'], ['bibliographystyle', '{}'], ['maketitle', ''], ['usepackage', '{}'], ['documentclass', '{}'], ['title', '{}'], ['author', '{}'], ['date', '{}'], ['today', ''], ['star', ''], ['in', ''], ['mathbb', '{}'], ['ell', ''], ['tau', ''], ['Theta', ''], ['hline', ''], ['textwidth', ''], ['linewidth', ''], ['noindent', '']];
+const acpop = $('#acpop');
+function acUpdate(line, caret) {
+  const m = line.match(/\\([a-zA-Z]+)$/);
+  if (!m || !caret) { acpop.hidden = true; return; }
+  const seen = new Set();
+  const list = CMDS.filter(([n]) => n.startsWith(m[1]) && n !== m[1] && !seen.has(n) && seen.add(n)).slice(0, 6);
+  if (!list.length) { acpop.hidden = true; return; }
+  acpop.innerHTML = list.map(([n, a], k) => `<div${k ? '' : ' class="on"'}><span>\\<b>${esc(m[1])}</b>${esc(n.slice(m[1].length))}${a}</span><small>${a.includes('{') ? 'cmd' : 'symbol'}</small></div>`).join('');
+  const r = caret.getBoundingClientRect();
+  acpop.hidden = false;
+  const w = acpop.offsetWidth, h = acpop.offsetHeight;
+  acpop.style.left = Math.max(8, Math.min(r.left, innerWidth - w - 8)) + 'px';
+  acpop.style.top = (r.bottom + h + 6 > innerHeight ? r.top - h - 4 : r.bottom + 3) + 'px';
+}
+
+/* ---------------- LaTeX editor view ---------------- */
+const caretEl = () => { const c = document.createElement('span'); c.className = 'caret'; return c; };
+const LV = {
+  box: $('#lines'), scroll: $('#edscroll'), lines: [], els: [], st: [], caret: caretEl(), dirty: false,
+  mk() { const d = document.createElement('div'); d.className = 'ln'; d.innerHTML = '<span class="gut"></span><span class="code"></span>'; return d; },
+  init(text) {
+    this.box.textContent = ''; this.lines = []; this.els = []; this.st = [{ m: false }];
+    const frag = document.createDocumentFragment();
+    text.split('\n').forEach((l, i) => {
+      this.lines.push(l);
+      const el = this.mk(); this.els.push(el); frag.appendChild(el);
+      const r = hl(l, this.st[i]); el.lastChild.innerHTML = r.html; this.st[i + 1] = r.end;
+    });
+    this.box.appendChild(frag);
+    this.placeCaret(); this.dirty = true;
+    requestAnimationFrame(() => this.follow(true));
+  },
+  get last() { return this.lines.length - 1; },
+  redraw(i) { const r = hl(this.lines[i], this.st[i]); this.els[i].lastChild.innerHTML = r.html; this.st[i + 1] = r.end; if (i === this.last) this.placeCaret(); },
+  placeCaret() { const el = this.els[this.last]; el.classList.add('cur'); el.lastChild.appendChild(this.caret); },
+  type(ch) {
+    if (ch === '\n') {
+      this.els[this.last].classList.remove('cur');
+      this.lines.push(''); const el = this.mk(); this.els.push(el); this.box.appendChild(el);
+      this.redraw(this.last);
+    } else { this.lines[this.last] += ch; this.redraw(this.last); }
+    this.dirty = true;
+  },
+  bs() {
+    const i = this.last;
+    if (!this.lines[i].length && i > 0) { this.els[i].remove(); this.els.pop(); this.lines.pop(); this.st.pop(); this.redraw(this.last); }
+    else { this.lines[i] = this.lines[i].slice(0, -1); this.redraw(i); }
+    this.dirty = true;
+  },
+  after() { this.follow(); acUpdate(this.lines[this.last], this.caret); },
+  text() { return this.lines.join('\n'); },
+  follow(jump) { keepVisible(this.scroll, this.caret, jump); }
+};
+function keepVisible(sc, el, jump) {
+  const c = el.getBoundingClientRect(), b = sc.getBoundingClientRect();
+  if (!b.height) return;
+  const pad = Math.min(90, b.height * 0.25);
+  if (c.bottom > b.bottom - pad) sc.scrollTop += c.bottom - (b.bottom - pad) + (jump ? b.height * 0.3 : 0);
+  else if (c.top < b.top + 10) sc.scrollTop -= (b.top + 10 - c.top) + (jump ? b.height * 0.3 : 0);
+}
+
+/* ---------------- word processor view ---------------- */
+const STY_NAME = { title: 'title', author: 'p', 'abs-h': 'p', abs: 'p', h1: 'h1', h2: 'h2', h3: 'h2', p: 'p', li: 'li', oli: 'li' };
+const WV = {
+  wrap: $('#wpages'), scroll: $('#wcanvas'), page: null, body: null, blk: null, span: null, caret: caretEl(), n: 0, lang: 'en',
+  init(lang) { this.lang = lang; this.wrap.textContent = ''; this.newPage(); this.blk = null; this.span = null; this.body.appendChild(this.caret); },
+  newPage() {
+    const p = document.createElement('div'); p.className = 'wpage';
+    p.innerHTML = `<div class="wbody paper${this.lang === 'zh' ? ' zh' : ''}"></div>`;
+    this.wrap.appendChild(p); this.page = p; this.body = p.firstChild;
+  },
+  para(style) {
+    const el = document.createElement('p'); el.className = 'w-' + style;
+    this.body.appendChild(el); this.blk = el; this.span = null; el.appendChild(this.caret);
+    this.fit(); setStyleUI(style);
+  },
+  ensure() { if (!this.blk) this.para('p'); },
+  ch(u) {
+    this.ensure();
+    const key = (u.b ? 'b' : '') + (u.i ? 'i' : '') + (u.tt ? 't' : '');
+    if (!this.span || this.span.dataset.k !== key) {
+      const s = document.createElement('span'); s.dataset.k = key;
+      if (u.b) s.style.fontWeight = '700';
+      if (u.i) s.style.fontStyle = 'italic';
+      if (u.tt) s.className = 'tt';
+      s.appendChild(document.createTextNode(''));
+      this.blk.insertBefore(s, this.caret); this.span = s;
+      setFmtUI(u);
+    }
+    this.span.firstChild.appendData(u.ch);
+    if (++this.n % 40 === 0) this.fit();
+  },
+  atom(html) { this.ensure(); const s = document.createElement('span'); s.className = 'watom'; s.innerHTML = html; this.blk.insertBefore(s, this.caret); this.span = null; },
+  block(html) { const d = document.createElement('div'); d.className = 'wblock'; d.innerHTML = html; this.body.appendChild(d); this.blk = null; this.span = null; d.appendChild(this.caret); this.fit(); },
+  bs() {
+    if (!this.blk) return;
+    let s = this.span;
+    if (!s) { const sp = this.blk.querySelectorAll(':scope > span[data-k]'); s = sp[sp.length - 1]; }
+    if (!s) return;
+    const t = s.firstChild; t.deleteData(t.length - 1, 1);
+    if (!t.length) { s.remove(); this.span = null; }
+  },
+  fit() {
+    if (this.body.scrollHeight > this.body.clientHeight + 2 && this.body.children.length > 1) {
+      const last = this.body.lastElementChild;
+      this.newPage(); this.body.appendChild(last);
+    }
+  },
+  after() { this.follow(); },
+  follow(jump) { keepVisible(this.scroll, this.caret, jump); }
+};
+function setStyleUI(style) { const k = STY_NAME[style] || 'p'; $$('.sty').forEach(b => b.classList.toggle('on', b.dataset.sty === k)); }
+function setFmtUI(u) { $('#rb').classList.toggle('on', !!u.b); $('#ri').classList.toggle('on', !!u.i); }
+
+function buildWordUnits(src) {
+  const { blocks, meta } = parseDoc(src, false);
+  const lang = CJK.test(src) ? 'zh' : 'en'; LANG = lang;
+  const ctx = makeCtx(blocks, lang), U = [];
+  const P = (style, s) => U.push({ k: 'p', style, src: s });
+  const C = (text, st, s, prose) => { for (const ch of text) U.push({ k: 'ch', ch, b: !!st.b, i: !!st.i, tt: !!st.tt, prose: !!prose && /[A-Za-z㐀-鿿]/.test(ch), src: s }); };
+  const I = (tex, s) => {
+    for (const t of tokenize(tex)) {
+      if (t.k === 't') C(t.text, t, s, !t.tt);
+      else if (t.k === 'm') U.push({ k: 'atom', tex: t.tex, src: s });
+      else if (t.k === 'c') C('[' + t.keys.map(ctx.cite).join(', ') + ']', {}, s, false);
+      else if (t.k === 'r') { const n = ctx.labels[t.key] || '??'; C(t.eq ? '(' + n + ')' : n, {}, s, false); }
+    }
+  };
+  for (const b of blocks) {
+    const s = b.src;
+    switch (b.t) {
+      case 'title':
+        P('title', s); I(meta.title || '', s);
+        (meta.author || '').split(/\\\\/).forEach(a => { if (a.trim()) { P('author', s); I(a.trim(), s); } });
+        break;
+      case 'abstract':
+        P('abs-h', s); C(lang === 'zh' ? '摘要' : 'Abstract', { b: true }, s, false);
+        b.tex.split(/\n\s*\n/).forEach(pp => { if (pp.trim()) { P('abs', s); I(pp.trim(), s); } });
+        break;
+      case 'section': case 'subsection': case 'subsubsection':
+        P({ section: 'h1', subsection: 'h2', subsubsection: 'h3' }[b.t], s);
+        if (b.num) C(b.num + ' ', {}, s, false);
+        I(b.tex, s); break;
+      case 'p': P('p', s); I(b.tex.trim(), s); break;
+      case 'list': b.items.forEach((it, k) => { P(b.ordered ? 'oli' : 'li', s); if (b.ordered) C((k + 1) + '. ', {}, s, false); I(it, s); }); break;
+      case 'eq': case 'table': case 'figure': U.push({ k: 'block', b, src: s }); break;
+      case 'refs': P('h1', s); C(lang === 'zh' ? '参考文献' : 'References', {}, s, false); U.push({ k: 'refs', src: s }); break;
+    }
+  }
+  return { U, ctx, meta, lang };
+}
+
+/* ---------------- PDF preview ---------------- */
+const PV = {
+  scroll: $('#pvscroll'), btn: $('#compile'), compiling: false, last: 0,
+  compile() {
+    if (this.compiling) return;
+    this.compiling = true; LV.dirty = false; this.btn.classList.add('spin');
+    setTimeout(() => { try { this.render(); } finally { this.compiling = false; this.btn.classList.remove('spin'); this.last = performance.now(); } }, rnd(450, 1100));
+  },
+  render() {
+    const text = LV.text();
+    const { blocks, meta } = parseDoc(text, true);
+    const lang = CJK.test(text) ? 'zh' : 'en'; LANG = lang;
+    const ctx = makeCtx(blocks, lang);
+    const holder = document.createElement('div');
+    holder.className = 'pages'; holder.style.cssText = 'visibility:hidden;position:absolute;left:16px;right:16px;top:16px';
+    this.scroll.appendChild(holder);
+    let pages = 0, body;
+    const newPage = () => {
+      pages++;
+      const p = document.createElement('div'); p.className = 'ppage';
+      p.innerHTML = `<div class="pbody paper${lang === 'zh' ? ' zh' : ''}"></div><div class="pfoot">${pages}</div>`;
+      holder.appendChild(p); body = p.firstChild;
+    };
+    newPage();
+    const tpl = document.createElement('template');
+    for (const b of blocks) {
+      const h = blockHTML(b, ctx, meta);
+      if (!h) continue;
+      tpl.innerHTML = h;
+      const el = tpl.content.firstElementChild;
+      if (!el) continue;
+      body.appendChild(el);
+      if (body.scrollHeight > body.clientHeight + 1 && body.children.length > 1) { newPage(); body.appendChild(el); }
+    }
+    const old = $('#pages');
+    holder.style.cssText = ''; holder.id = 'pages';
+    old.replaceWith(holder);
+    const lastEl = body.lastElementChild || body;
+    const sb = this.scroll.getBoundingClientRect(), lb = lastEl.getBoundingClientRect();
+    this.scroll.scrollTop = Math.max(0, this.scroll.scrollTop + lb.bottom - sb.top - this.scroll.clientHeight + 60);
+    $('#pgno').textContent = `${pages} / ${pages}`;
+    const secs = blocks.filter(b => b.t === 'section' || b.t === 'subsection');
+    $('#olist').innerHTML = secs.length
+      ? secs.map(b => `<div class="oi${b.t === 'subsection' ? ' l2' : ''}">${esc(tokenize(b.tex).map(t => t.text || '').join(''))}</div>`).join('')
+      : '<div class="oi empty">No sections yet</div>';
+  }
+};
+
+/* ---------------- keyboard sound ---------------- */
+const Snd = {
+  ctx: null, out: null, bufs: null, type: null,
+  init() {
+    if (this.ctx) { this.resume(); return; }
+    try {
+      const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+      this.ctx = new AC(); this.out = this.ctx.createGain(); this.out.connect(this.ctx.destination); this.build();
+    } catch (e) { this.ctx = null; }
+  },
+  resume() { try { if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume(); } catch (e) {} },
+  build() {
+    this.type = S.switchType;
+    const mk = kind => [0, 1, 2, 3].map(() => this.synth(kind, this.type));
+    this.bufs = { key: mk('key'), space: mk('space'), enter: mk('enter') };
+  },
+  synth(kind, type) {
+    const sr = this.ctx.sampleRate, big = kind !== 'key', dur = big ? 0.15 : 0.1, n = Math.floor(sr * dur);
+    const b = this.ctx.createBuffer(1, n, sr), d = b.getChannelData(0);
+    const blue = type === 'blue';
+    const tB = (blue ? 0.007 : 0.004) + R() * 0.004, tR = (big ? 0.078 : 0.058) + R() * 0.012;
+    const ping = blue ? rnd(3300, 4300) : rnd(1500, 1900);
+    const body = big ? rnd(105, 150) : (blue ? rnd(270, 340) : rnd(170, 230));
+    let lp1 = 0, lp2 = 0;
+    for (let i = 0; i < n; i++) {
+      const t = i / sr, nz = R() * 2 - 1;
+      let x = 0;
+      if (blue && t < 0.005) x += nz * Math.exp(-t / 0.0006) * 0.9 + Math.sin(6.2832 * ping * t) * Math.exp(-t / 0.0016) * 0.55;
+      const tb = t - tB;
+      if (tb >= 0) {
+        lp1 += (blue ? 0.33 : 0.16) * (nz - lp1);
+        x += lp1 * Math.exp(-tb / (big ? 0.013 : 0.007)) * (big ? 1.15 : 0.95)
+          + Math.sin(6.2832 * body * tb) * Math.exp(-tb / (big ? 0.032 : 0.014)) * (big ? 0.55 : 0.35)
+          + Math.sin(3.1416 * ping * tb) * Math.exp(-tb / 0.003) * (blue ? 0.14 : 0.24);
+      }
+      const tr = t - tR;
+      if (tr >= 0) {
+        lp2 += 0.25 * (nz - lp2);
+        x += lp2 * Math.exp(-tr / 0.004) * 0.32 + (big ? Math.sin(6.2832 * body * 1.4 * tr) * Math.exp(-tr / 0.02) * 0.2 : 0);
+      }
+      d[i] = x * 0.6 * Math.min(1, (n - i) / (sr * 0.004));
+    }
+    return b;
+  },
+  play(kind) {
+    if (!S.sound || !this.ctx) return;
+    try {
+      if (this.type !== S.switchType) this.build();
+      const arr = this.bufs[kind] || this.bufs.key;
+      const src = this.ctx.createBufferSource(); src.buffer = arr[Math.floor(R() * arr.length)];
+      src.playbackRate.value = rnd(0.93, 1.07) * (kind === 'bs' ? 1.1 : 1);
+      const g = this.ctx.createGain(); g.gain.value = (S.volume / 100) * rnd(0.72, 1);
+      src.connect(g); g.connect(this.out); src.start();
+    } catch (e) {}
+  },
+  forChar(ch) { this.play(ch === ' ' ? 'space' : ch === '\n' ? 'enter' : 'key'); }
+};
+
+/* ---------------- typing engine ---------------- */
+const E = {
+  mode: 'latex', src: '', mask: null, W: null, pos: 0, q: [], credit: 0, waitUntil: 0, timer: null, typingT: null,
+  get len() { return this.mode === 'latex' ? this.src.length : this.W.U.length; },
+  get view() { return this.mode === 'latex' ? LV : WV; },
+  unit(i) { return this.mode === 'latex' ? { k: 'ch', ch: this.src[i], prose: this.mask[i] === 1, src: i } : this.W.U[i]; },
+  ensureW() { if (!this.W) this.W = buildWordUnits(this.src); },
+  load(pos, mode) {
+    this.src = getSrc(); this.mask = proseMask(this.src); this.W = null; this.q = []; this.waitUntil = 0;
+    this.mode = mode; if (mode === 'word') this.ensureW();
+    this.ff(Math.max(0, Math.min(pos, this.len)));
+  },
+  ff(n) {
+    this.pos = n; this.q = [];
+    if (this.mode === 'latex') { LV.init(this.src.slice(0, n)); PV.compile(); }
+    else {
+      WV.init(this.W.lang);
+      for (let i = 0; i < n; i++) this.apply(this.W.U[i], true);
+      WV.fit(); requestAnimationFrame(() => WV.follow(true));
+    }
+    updateStats(true);
+  },
+  latexToWord(p) {
+    this.ensureW(); const U = this.W.U;
+    let j = -1; for (let i = 0; i < U.length; i++) { if (U[i].src <= p) j = i; else break; }
+    if (j < 0) return 0;
+    const s = U[j].src; while (j > 0 && U[j - 1].src === s) j--;
+    return j;
+  },
+  wordToLatex(p) { const u = this.W.U[p]; return u ? u.src : this.src.length; },
+  setMode(mode) {
+    if (mode === this.mode) return;
+    const p = this.mode === 'latex' ? this.latexToWord(this.pos) : this.wordToLatex(this.pos);
+    this.mode = mode; if (mode === 'word') this.ensureW();
+    this.ff(p);
+  },
+  apply(u, silent) {
+    if (this.mode === 'latex') { LV.type(u.ch); if (!silent) Snd.forChar(u.ch); return; }
+    switch (u.k) {
+      case 'ch': WV.ch(u); if (!silent) Snd.forChar(u.ch); break;
+      case 'p': WV.para(u.style); if (!silent) Snd.play('enter'); break;
+      case 'atom': WV.atom(mathHTML(u.tex, false)); if (!silent) Snd.play('key'); break;
+      case 'block': WV.block(blockHTML(u.b, this.W.ctx, this.W.meta)); if (!silent) Snd.play('enter'); break;
+      case 'refs': WV.block(`<ol class="p-refs">${refsList(this.W.ctx)}</ol>`); if (!silent) Snd.play('enter'); break;
+    }
+  },
+  press(mult = 1) {
+    this.credit = Math.min(this.credit + S.perKey * mult, 60);
+    if (!this.timer) this.tick();
+  },
+  schedule(ms) { clearTimeout(this.timer); this.timer = setTimeout(() => { this.timer = null; this.tick(); }, Math.max(0, ms)); },
+  tick() {
+    this.timer = null;
+    if (UI.open) return;
+    const now = performance.now();
+    if (now < this.waitUntil) { this.schedule(this.waitUntil - now); return; }
+    if (!this.q.length) this.plan();
+    const a = this.q[0];
+    if (a.w != null) { this.q.shift(); this.waitUntil = now + a.w; this.schedule(a.w); return; }
+    if (a.restart) { this.q.shift(); this.ff(0); this.schedule(500); return; }
+    if (!S.auto && this.credit <= 0) return;
+    this.q.shift();
+    if (!S.auto) this.credit--;
+    if (a.bs) { this.view.bs(); Snd.play('bs'); }
+    else { this.apply(a.u); if (a.adv) this.pos++; }
+    this.view.after();
+    document.body.classList.add('typing');
+    clearTimeout(this.typingT); this.typingT = setTimeout(() => document.body.classList.remove('typing'), 650);
+    markEdited();
+    this.schedule(this.delay(a));
+  },
+  delay(a) {
+    let d = (1000 / (S.auto ? S.autoCps : S.cps)) * rnd(0.55, 1.45);
+    if (a.bs) return d * 0.75;
+    const u = a.u;
+    if (u && u.k === 'ch') {
+      if (u.ch === ' ') {
+        const prev = this.pos > 1 ? this.unit(this.pos - 2) : null;
+        if (this.mode === 'latex' && prev && (prev.ch === ' ' || prev.ch === '\n') && /^\s*$/.test(LV.lines[LV.last])) d *= 0.2;
+        else d *= 1.2;
+        if (S.auto && R() < 0.06) d += rnd(250, 900);
+      } else if (/[,.;:，。；：、]/.test(u.ch)) d *= 1.7;
+      else if (u.ch === '\n') d *= 2;
+    }
+    if (!S.auto && this.credit > 24) d *= 0.6;
+    return d;
+  },
+  plan() {
+    if (this.pos >= this.len) { this.q.push({ w: 3000 }, { restart: true }); return; }
+    const u = this.unit(this.pos), p = this.pos > 0 ? this.unit(this.pos - 1) : null;
+    const ty = S.typo / 100, pz = S.pause / 100;
+    if (u.k === 'block' || u.k === 'refs') this.q.push({ w: rnd(700, 1700) });
+    else if (u.k === 'p') { if (R() < pz * 4) this.q.push({ w: rnd(900, 2600) }); }
+    else if (p && p.k === 'ch') {
+      if (/[.!?。！？]/.test(p.ch) && (u.ch === ' ' || u.ch === '\n' || CJK.test(u.ch)) && R() < pz * 2.2) this.q.push({ w: rnd(500, 1900) });
+      else if (p.ch === '\n' && u.ch === '\n' && R() < pz * 4) this.q.push({ w: rnd(900, 2600) });
+      else if (/[,，;；]/.test(p.ch) && R() < pz * 0.8) this.q.push({ w: rnd(300, 900) });
+    }
+    if (u.k === 'ch' && p && p.k === 'ch') {
+      if (R() < ty * 0.45) {
+        // reconsider: delete the last few characters / the last word, think, retype
+        let k = 0;
+        const back = i => (this.pos - 1 - i >= 0 ? this.unit(this.pos - 1 - i) : null);
+        if (p.prose && CJK.test(p.ch)) {
+          const want = rint(2, 4);
+          while (k < want) { const q = back(k); if (q && q.k === 'ch' && q.prose && CJK.test(q.ch)) k++; else break; }
+          if (k < 2) k = 0;
+        } else if (/[\s.,;:)]/.test(u.ch) && /[A-Za-z]/.test(p.ch)) {
+          while (k < 14) { const q = back(k); if (q && q.k === 'ch' && q.prose && /[A-Za-z]/.test(q.ch)) k++; else break; }
+          const before = back(k);
+          if (k < 3 || k >= 14 || (before && /[A-Za-z\\]/.test(before.ch))) k = 0;
+        }
+        if (k) {
+          this.q.push({ w: rnd(250, 750) });
+          for (let j = 0; j < k; j++) this.q.push({ bs: 1 });
+          this.q.push({ w: rnd(450, 1300) });
+          for (let j = k; j >= 1; j--) this.q.push({ u: this.unit(this.pos - j), adv: false });
+        }
+      } else if (u.prose && R() < ty) {
+        const n = R() < 0.75 ? 1 : 2;
+        for (let j = 0; j < n; j++) this.q.push({ u: Object.assign({}, u, { ch: wrongChar(u.ch), prose: false }), adv: false });
+        this.q.push({ w: rnd(180, 520) });
+        for (let j = 0; j < n; j++) this.q.push({ bs: 1 });
+        this.q.push({ w: rnd(60, 200) });
+      }
+    }
+    this.q.push({ u, adv: true });
+  }
+};
+
+/* ---------------- status / saving ---------------- */
+let savedT = null, lastStats = 0;
+function markEdited() {
+  const a = $('#st-saved span:last-child'); if (a.textContent !== 'Saving…') a.textContent = 'Saving…';
+  $('#wdsaved').textContent = '· Saving…';
+  clearTimeout(savedT);
+  savedT = setTimeout(() => { a.textContent = 'Saved'; $('#wdsaved').textContent = '· Saved'; saveProgress(); }, 1300);
+  const now = performance.now();
+  if (now - lastStats > 900) updateStats();
+}
+function updateStats(force) {
+  lastStats = performance.now();
+  if (E.mode === 'latex') {
+    $('#st-pos').textContent = `Ln ${LV.lines.length}, Col ${LV.lines[LV.last].length + 1}`;
+    $('#st-words').textContent = `${fmt(countWordsTex(LV.text()))} words`;
+  } else {
+    const pages = WV.wrap.children.length;
+    $('#ws-page').textContent = `Page ${pages} of ${pages}`;
+    $('#ws-words').textContent = `${fmt(countWords(WV.wrap.textContent))} words`;
+    $('#ws-lang').textContent = WV.lang === 'zh' ? 'Chinese (PRC)' : 'English (United States)';
+  }
+}
+function saveProgress() { store.set('progress', { key: srcKey(E.src), mode: E.mode, pos: E.pos }); }
+setInterval(() => {
+  if (E.mode !== 'latex' || PV.compiling || !LV.dirty) return;
+  const now = performance.now(), idle = now - (E.lastAct || 0);
+  if (idle > 1800 || now - PV.last > 9000) PV.compile();
+}, 500);
+
+/* ---------------- UI: skins, settings, keys ---------------- */
+const hostTheme = document.documentElement.getAttribute('data-theme');
+function applyTheme() {
+  const r = document.documentElement;
+  if (S.theme === 'auto') { if (hostTheme) r.setAttribute('data-theme', hostTheme); else r.removeAttribute('data-theme'); }
+  else r.setAttribute('data-theme', S.theme);
+}
+function applySkin() {
+  $('#lx').hidden = S.skin !== 'latex';
+  $('#wd').hidden = S.skin !== 'word';
+  acpop.hidden = true;
+  document.title = S.skin === 'latex' ? 'main.tex · Thesis Draft' : 'Thesis_Draft_v7.docx';
+}
+function applyAutoDot() { ['#autodot', '#autodot2'].forEach(s => $(s).classList.toggle('on', S.auto)); }
+let toastT = null;
+function toast(html, ms = 1500) { const t = $('#toast'); t.innerHTML = html; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => { t.hidden = true; }, ms); }
+
+const UI = {
+  open: false,
+  show() {
+    this.open = true; $('#settings').hidden = false; acpop.hidden = true; this.sync();
+    setTimeout(() => $('#b-close').focus(), 0);
+  },
+  hide() { this.open = false; $('#settings').hidden = true; saveS(); E.waitUntil = 0; if (!E.timer) E.tick(); },
+  sync() {
+    $$('#o-skin .chip').forEach(c => c.classList.toggle('on', c.dataset.v === S.skin));
+    $('#o-preset').value = S.preset; $('#o-custom').hidden = S.preset !== 'custom'; $('#o-custom').value = S.custom;
+    const setR = (id, v, txt) => { $('#o-' + id).value = v; $('#v-' + id).textContent = txt; };
+    setR('perkey', S.perKey, S.perKey + ' 字');
+    setR('cps', S.cps, S.cps + ' 字/秒');
+    setR('typo', S.typo, ['从不', '偶尔', '偶尔', '时常', '时常', '时常', '经常', '经常', '手残', '手残', '手残'][S.typo]);
+    setR('pause', S.pause, ['从不', '很少', '很少', '偶尔', '偶尔', '适中', '适中', '常常', '常常', '沉思', '沉思'][S.pause]);
+    setR('autocps', S.autoCps, S.autoCps + ' 字/秒');
+    setR('vol', S.volume, S.volume + '%');
+    $('#o-auto').checked = S.auto; $('#o-sound').checked = S.sound; $('#o-switch').value = S.switchType; $('#o-theme').value = S.theme;
+  }
+};
+$('#o-skin').addEventListener('click', e => {
+  const b = e.target.closest('.chip'); if (!b) return;
+  S.skin = b.dataset.v; applySkin(); E.setMode(S.skin); saveS(); UI.sync();
+});
+$('#o-preset').addEventListener('change', e => {
+  S.preset = e.target.value; saveS(); UI.sync();
+  E.load(S.preset === 'custom' ? 0 : startPos(getSrc()), S.skin);
+});
+let customT = null;
+$('#o-custom').addEventListener('input', e => {
+  S.custom = e.target.value; clearTimeout(customT);
+  customT = setTimeout(() => { saveS(); E.load(0, S.skin); }, 600);
+});
+const bindRange = (id, key) => $('#o-' + id).addEventListener('input', e => { S[key] = +e.target.value; saveS(); UI.sync(); });
+bindRange('perkey', 'perKey'); bindRange('cps', 'cps'); bindRange('typo', 'typo'); bindRange('pause', 'pause'); bindRange('autocps', 'autoCps'); bindRange('vol', 'volume');
+$('#o-vol').addEventListener('change', () => { Snd.init(); Snd.play('key'); });
+$('#o-auto').addEventListener('change', e => { S.auto = e.target.checked; saveS(); applyAutoDot(); Snd.init(); });
+$('#o-sound').addEventListener('change', e => { S.sound = e.target.checked; saveS(); if (S.sound) { Snd.init(); Snd.play('key'); } });
+$('#o-switch').addEventListener('change', e => { S.switchType = e.target.value; saveS(); Snd.init(); Snd.play('key'); setTimeout(() => Snd.play('space'), 160); });
+$('#o-theme').addEventListener('change', e => { S.theme = e.target.value; saveS(); applyTheme(); });
+$('#b-close').addEventListener('click', () => UI.hide());
+$('#b-reset').addEventListener('click', () => { E.load(0, S.skin); UI.hide(); });
+$('#settings').addEventListener('click', e => { if (e.target.id === 'settings') UI.hide(); });
+$$('[data-i="menu"], [data-i="save"]').forEach(b => b.addEventListener('click', () => UI.show()));
+$('#compile').addEventListener('click', () => PV.compile());
+
+const IGNORE = new Set(['Shift', 'Control', 'Alt', 'Meta', 'CapsLock', 'NumLock', 'ScrollLock', 'Fn', 'FnLock', 'ContextMenu', 'Escape', 'Dead', 'Unidentified', 'OS', 'Hyper', 'Super']);
+document.addEventListener('keydown', e => {
+  if (UI.open) { if (e.key === 'Escape' || e.key === 'F2') { e.preventDefault(); UI.hide(); } return; }
+  if (e.key === 'F2') { e.preventDefault(); UI.show(); return; }
+  if (e.key === 'F4') { e.preventDefault(); S.auto = !S.auto; saveS(); applyAutoDot(); Snd.init(); toast(S.auto ? '自动打字：开' : '自动打字：关'); if (!E.timer) E.tick(); return; }
+  if (e.key === 'F8') { e.preventDefault(); S.sound = !S.sound; saveS(); toast(S.sound ? '键盘音效：开' : '键盘音效：关'); return; }
+  if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S' || e.key === 'Enter')) {
+    e.preventDefault(); if (E.mode === 'latex') PV.compile(); else { $('#wdsaved').textContent = '· Saved'; } return;
+  }
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
+  if (IGNORE.has(e.key) || /^F\d{1,2}$/.test(e.key)) return;
+  e.preventDefault();
+  hideHint();
+  Snd.init();
+  E.lastAct = performance.now();
+  E.press(e.repeat ? 0.6 : 1);
+});
+['#edscroll', '#pvscroll', '#wcanvas'].forEach(sel => $(sel).addEventListener('pointerdown', e => {
+  if (e.pointerType === 'mouse') return;
+  hideHint(); Snd.init(); E.lastAct = performance.now(); E.press(2);
+}));
+function hideHint() { if (!S.hintSeen) { S.hintSeen = true; saveS(); $('#toast').hidden = true; } }
+
+function startPos(src) {
+  const i = src.indexOf('\\begin{abstract}');
+  if (i < 0) return 0;
+  const j = src.slice(i).search(/[.。]/);
+  return j > 0 ? i + j + 1 : i;
+}
+
+/* ---------------- boot ---------------- */
+applyTheme(); applySkin(); applyAutoDot();
+{
+  const src = getSrc(), prog = store.get('progress', null);
+  let pos = startPos(src), mode = S.skin;
+  if (prog && prog.key === srcKey(src)) {
+    E.src = src; E.mask = proseMask(src);
+    pos = prog.pos;
+    if (prog.mode !== mode) { E.mode = prog.mode; if (prog.mode === 'word') { E.ensureW(); pos = E.wordToLatex(pos); } if (mode === 'word') pos = E.latexToWord(pos); }
+  } else if (mode === 'word') { E.src = src; E.mask = proseMask(src); pos = E.latexToWord(pos); }
+  E.load(pos, mode);
+}
+if (!S.hintSeen) toast('随便敲键盘，论文就会自己写出来 · <kbd>F2</kbd> 设置 · <kbd>F4</kbd> 自动打字', 9000);
+window.__mjReady = () => {
+  mjReady = true;
+  try { document.head.appendChild(MathJax.svgStylesheet()); } catch (e) {}
+  if (E.mode === 'latex') PV.compile();
+  else { const p = E.pos; E.ff(p); }
+};
+if (window.MathJax && MathJax.startup && MathJax.startup.promise && MathJax.tex2svg) MathJax.startup.promise.then(window.__mjReady);
+})();
+</script>
+</body>
+</html>
