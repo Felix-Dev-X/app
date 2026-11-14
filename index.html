@@ -20,6 +20,7 @@
   --w-title:#34477e; --w-title-fg:#ffffff; --w-title-fg-2:#d5dcef; --w-search:#4a5c93; --w-ribbon:#f6f7f9; --w-canvas:#e6e7ea; --w-accent:#34477e;
   --scrim:rgba(20,24,30,.42); --shadow:0 10px 30px rgba(15,20,30,.22);
   --toast-bg:#20252c; --toast-fg:#f1f3f5;
+  --warn:#d9900f; --warn-fg:#ffffff; --warn-text:#a36400;
   --paper:#ffffff; --ink:#151515; --paper-link:#1a55a8; --w-head:#24407a; --paper-muted:#666666;
   --ui:"Inter", system-ui, -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
   --mono:"Source Code Pro", ui-monospace, Menlo, Consolas, "PingFang SC", "Microsoft YaHei", monospace;
@@ -36,7 +37,7 @@
   --pv-bg:#2a2e34;
   --w-title:#24345f; --w-title-fg:#f1f3f8; --w-title-fg-2:#aeb8d4; --w-search:#33446f; --w-ribbon:#1f2328; --w-canvas:#2a2d32; --w-accent:#8ea6e6;
   --scrim:rgba(0,0,0,.55); --shadow:0 10px 30px rgba(0,0,0,.5);
-  --toast-bg:#e9ecef; --toast-fg:#16191d;
+  --toast-bg:#e9ecef; --toast-fg:#16191d; --warn-text:#f0b341;
   color-scheme:dark;
 }}
 :root[data-theme="dark"]{
@@ -49,7 +50,7 @@
   --pv-bg:#2a2e34;
   --w-title:#24345f; --w-title-fg:#f1f3f8; --w-title-fg-2:#aeb8d4; --w-search:#33446f; --w-ribbon:#1f2328; --w-canvas:#2a2d32; --w-accent:#8ea6e6;
   --scrim:rgba(0,0,0,.55); --shadow:0 10px 30px rgba(0,0,0,.5);
-  --toast-bg:#e9ecef; --toast-fg:#16191d;
+  --toast-bg:#e9ecef; --toast-fg:#16191d; --warn-text:#f0b341;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
@@ -251,6 +252,28 @@ kbd{font:11px var(--mono);border:1px solid var(--line);border-bottom-width:2px;b
 .toast{position:fixed;left:50%;bottom:calc(40px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--toast-bg);color:var(--toast-fg);padding:9px 14px;border-radius:7px;font-size:12.5px;z-index:60;box-shadow:var(--shadow);max-width:calc(100% - 32px);text-align:center;line-height:1.6}
 .toast kbd{background:transparent;color:inherit;border-color:currentColor;opacity:.85}
 
+/* logs, alt files, stats */
+.ib.rel{position:relative}
+.badge{position:absolute;top:1px;right:-2px;min-width:15px;height:15px;border-radius:8px;background:var(--warn);color:var(--warn-fg);font:700 9.5px/15px var(--ui);text-align:center;padding:0 3px}
+.pv{position:relative}
+#logs{position:absolute;top:44px;left:8px;width:min(520px,calc(100% - 16px));max-height:50%;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:6px;box-shadow:var(--shadow);z-index:5;font:11.5px/1.55 var(--mono)}
+#logs .lh{padding:8px 12px;font:600 12px var(--ui);color:var(--fg);border-bottom:1px solid var(--line);display:flex;justify-content:space-between}
+#logs .lh span{color:var(--fg-3);font-weight:400}
+#logs .le{padding:6px 12px;color:var(--fg-2);border-bottom:1px solid var(--line)}
+#logs .le b{color:var(--warn-text);font-weight:600}
+#logs .ok{color:var(--accent);padding:10px 12px}
+.fi[data-file]{cursor:pointer}
+.fi[data-file]:not(.on):hover{background:var(--hover)}
+#altview{flex:1;overflow:auto;font:13px/20px var(--mono);counter-reset:ln;padding:6px 0 30vh;background:linear-gradient(to right,var(--ed-gutter) 50px,transparent 50px)}
+#altview.img{display:grid;place-items:center;align-content:start;background:var(--panel-2);padding:28px 16px}
+.imgbox{background:var(--paper);color:var(--ink);padding:18px;width:min(620px,100%);box-shadow:0 1px 4px rgba(0,0,0,.25)}
+.imgbox svg{width:100%;height:auto;display:block}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin:2px 0 12px}
+.stat{flex:1 1 7em;background:var(--panel-2);border-radius:8px;padding:8px 12px;font-size:11.5px;color:var(--fg-3);font-variant-numeric:tabular-nums}
+.stat b{display:block;font-size:18px;line-height:1.3;color:var(--fg);font-weight:600}
+.filebtn{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font-size:12px;color:var(--fg-2);border:1px solid var(--line);border-radius:6px;padding:5px 10px;cursor:pointer}
+.filebtn:hover{background:var(--hover)}
+.filebtn input{position:absolute;width:1px;height:1px;opacity:0}
 @media (max-width:860px){ .files{display:none} .tb .lbl{display:none} .hide-md{display:none!important} }
 @media (max-width:640px){
   .ws{flex-direction:column}
@@ -288,15 +311,15 @@ kbd{font:11px var(--mono);border:1px solid var(--line);border-bottom-width:2px;b
       </div>
       <div class="ftree">
         <div class="fi" data-i="folder">figures</div>
-        <div class="fi in" data-i="image">framework.pdf</div>
-        <div class="fi in" data-i="image">ablation.pdf</div>
-        <div class="fi in" data-i="image">case_study.png</div>
+        <div class="fi in" data-i="image" data-file="framework.pdf">framework.pdf</div>
+        <div class="fi in" data-i="image" data-file="ablation.pdf">ablation.pdf</div>
+        <div class="fi in" data-i="image" data-file="case_study.png">case_study.png</div>
         <div class="fi" data-i="folder">sections</div>
-        <div class="fi in" data-i="file">appendix.tex</div>
-        <div class="fi in" data-i="file">notation.tex</div>
-        <div class="fi on" data-i="file" id="curfile">main.tex</div>
-        <div class="fi" data-i="file">refs.bib</div>
-        <div class="fi" data-i="file">neurips_2026.sty</div>
+        <div class="fi in" data-i="file" data-file="appendix.tex">appendix.tex</div>
+        <div class="fi in" data-i="file" data-file="notation.tex">notation.tex</div>
+        <div class="fi on" data-i="file" data-file="main" id="curfile">main.tex</div>
+        <div class="fi" data-i="file" data-file="refs.bib">refs.bib</div>
+        <div class="fi" data-i="file" data-file="conf_template.sty">conf_template.sty</div>
       </div>
       <div class="outline">
         <div class="ohd">File outline</div>
@@ -320,6 +343,7 @@ kbd{font:11px var(--mono);border:1px solid var(--line);border-bottom-width:2px;b
         <button class="ib" data-i="search" aria-label="Search"></button>
       </div>
       <div id="edscroll"><div id="lines"></div></div>
+      <div id="altview" hidden></div>
       <div class="edstat">
         <span id="st-file">main.tex</span>
         <span id="st-pos">Ln 1, Col 1</span>
@@ -332,12 +356,13 @@ kbd{font:11px var(--mono);border:1px solid var(--line);border-bottom-width:2px;b
     <section class="pv">
       <div class="bar pvbar">
         <span class="cbtn"><button class="compile" id="compile" data-i="refresh">Recompile</button><span class="cdrop" data-i="chev"></span></span>
-        <button class="ib" data-i="doc" aria-label="Logs"></button>
+        <button class="ib rel" id="logbtn" data-i="doc" aria-label="Logs and output files"><span class="badge" id="logbadge" hidden>0</span></button>
         <span class="grow"></span>
         <span class="pgno" id="pgno">1 / 1</span>
         <button class="dd hide-sm">Page width<span data-i="chev"></span></button>
         <button class="ib hide-sm" data-i="download" aria-label="Download PDF"></button>
       </div>
+      <div id="logs" hidden></div>
       <div id="pvscroll"><div class="pages" id="pages"></div></div>
     </section>
   </div>
@@ -397,11 +422,17 @@ kbd{font:11px var(--mono);border:1px solid var(--line);border-bottom-width:2px;b
   <div class="dlg" role="dialog" aria-modal="true" aria-labelledby="set-h">
     <h2 id="set-h">Editor settings</h2>
     <p class="sub">随便敲键盘，屏幕就会按下面的节奏自动吐出论文。设置只保存在这个浏览器里。</p>
+    <div class="stats" aria-label="今日战报">
+      <div class="stat"><b id="s-words">0</b>今天“写”了（字）</div>
+      <div class="stat"><b id="s-keys">0</b>乱敲键盘（次）</div>
+      <div class="stat"><b id="s-time">0 分</b>摸鱼时长</div>
+    </div>
     <div class="row"><span class="lab">伪装界面</span>
       <div class="chips" id="o-skin"><button class="chip" data-v="latex">LaTeX 在线编辑器</button><button class="chip" data-v="word">Word 文档</button></div></div>
     <div class="row"><label for="o-preset">论文内容</label>
       <div><select id="o-preset"><option value="en">英文论文 · 交通流量预测（GNN）</option><option value="zh">中文学位论文 · 同主题</option><option value="custom">自定义（粘贴自己的 .tex）</option></select>
-      <textarea id="o-custom" hidden placeholder="把你提前存好的文献综述、公式推导、表格粘贴到这里。完整 .tex 文档或只有正文的片段都可以。"></textarea></div></div>
+      <textarea id="o-custom" hidden placeholder="把你提前存好的文献综述、公式推导、表格粘贴到这里。完整 .tex 文档或只有正文的片段都可以；纯文本按空行分段也行。"></textarea>
+      <label class="filebtn" id="o-filewrap" hidden>导入 .tex / .txt 文件<input type="file" id="o-file" accept=".tex,.txt,.md,.bib,text/plain"></label></div></div>
     <div class="row"><label for="o-perkey">每次按键吐字</label>
       <div class="rng"><input type="range" id="o-perkey" min="1" max="10" step="1"><span class="val" id="v-perkey"></span></div></div>
     <div class="row"><label for="o-cps">打字速度上限</label>
@@ -417,8 +448,8 @@ kbd{font:11px var(--mono);border:1px solid var(--line);border-bottom-width:2px;b
     <div class="row"><label for="o-theme">外观</label>
       <div><select id="o-theme"><option value="auto">跟随系统</option><option value="light">浅色</option><option value="dark">深色</option></select></div></div>
     <div class="row"><span class="lab">快捷键</span>
-      <div class="keys"><kbd>任意键</kbd> 写论文 · <kbd>F2</kbd> 设置 · <kbd>F4</kbd> 自动打字 · <kbd>F8</kbd> 静音 · <kbd>Ctrl</kbd>+<kbd>S</kbd> 编译/保存 · <kbd>Esc</kbd> 关闭</div></div>
-    <div class="btns"><button class="btn" id="b-reset">从头开始写</button><button class="btn pri" id="b-close">继续“写论文”</button></div>
+      <div class="keys"><kbd>任意键</kbd> 写论文 · <kbd>F2</kbd> 设置 · <kbd>F4</kbd> 自动打字 · <kbd>F8</kbd> 静音 · <kbd>F9</kbd> 全屏伪装 · <kbd>Ctrl</kbd>+<kbd>S</kbd> 编译/保存 · <kbd>Esc</kbd> 关闭</div></div>
+    <div class="btns"><button class="btn" id="b-fs">全屏伪装（F9）</button><button class="btn" id="b-reset">从头开始写</button><button class="btn pri" id="b-close">继续“写论文”</button></div>
   </div>
 </div>
 
@@ -599,6 +630,62 @@ In this paper, we presented ASTGAT, an adaptive spatio-temporal graph attention 
 \bibliographystyle{plainnat}
 \bibliography{refs}
 
+\appendix
+
+\section{Hyperparameter Sensitivity}
+\label{app:sensitivity}
+
+We study the sensitivity of ASTGAT to two key hyperparameters: the node embedding dimension $d$ and the number of graph convolution hops $K$. All other settings are kept the same as in Section~\ref{sec:exp}. Table~\ref{tab:sensitivity} reports the 60-minute MAE on METR-LA. The model is robust to a wide range of embedding dimensions; performance saturates around $d = 10$, and larger embeddings slightly increase the risk of overfitting. Increasing $K$ from 1 to 2 brings a clear improvement, whereas a third hop adds computation without further gains.
+
+\begin{table}[h]
+  \centering
+  \caption{Sensitivity of the 60-minute MAE on METR-LA to the embedding dimension $d$ and the number of hops $K$.}
+  \label{tab:sensitivity}
+  \begin{tabular}{lcccc}
+    \toprule
+    Embedding dimension $d$ & 5 & 10 & 20 & 40 \\
+    \midrule
+    $K = 1$ & 3.41 & 3.36 & 3.37 & 3.42 \\
+    $K = 2$ & 3.34 & \textbf{3.29} & 3.31 & 3.35 \\
+    $K = 3$ & 3.35 & 3.30 & 3.31 & 3.37 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{Complexity Analysis}
+\label{app:complexity}
+
+For a graph with $N$ nodes, the adaptive graph generator in Eq.~\eqref{eq:dynamic} requires $\mathcal{O}(N^2 d)$ operations per time step to compute $\mathbf{E}_t \mathbf{E}_t^{\top}$, and the $K$-hop graph convolution in Eq.~\eqref{eq:gconv} costs $\mathcal{O}(K N^2 C)$. The dilated temporal convolution processes all time steps in parallel, with a cost that is linear in the sequence length. The overall complexity of one forward pass is therefore
+\begin{equation}
+  \mathcal{O}\left(T \left(N^2 d + K N^2 C\right) + T N C^2 L\right),
+  \label{eq:complexity}
+\end{equation}
+where $L$ is the number of temporal layers. Since $d$ and $K$ are small constants in practice, the quadratic term in $N$ dominates only for very large road networks. For networks with thousands of sensors, the dense adjacency matrix can be replaced by a top-$k$ sparsified version, which reduces the cost to $\mathcal{O}(N k d)$ with little loss in accuracy.
+
+\section{Additional Results on PEMS-BAY}
+\label{app:pemsbay}
+
+Table~\ref{tab:pemsbay} reports the results on PEMS-BAY. Traffic in this dataset is generally smoother than in METR-LA, so all models achieve lower errors, but the relative ranking is consistent. ASTGAT again achieves the best accuracy at every horizon, with the largest margin at 60 minutes.
+
+\begin{table}[h]
+  \centering
+  \caption{Performance comparison on the PEMS-BAY dataset.}
+  \label{tab:pemsbay}
+  \begin{tabular}{lccccccccc}
+    \toprule
+    Horizon & \multicolumn{3}{c}{15 min} & \multicolumn{3}{c}{30 min} & \multicolumn{3}{c}{60 min} \\
+    Model & MAE & RMSE & MAPE & MAE & RMSE & MAPE & MAE & RMSE & MAPE \\
+    \midrule
+    DCRNN & 1.38 & 2.95 & 2.90\% & 1.74 & 3.97 & 3.90\% & 2.07 & 4.74 & 4.90\% \\
+    STGCN & 1.36 & 2.96 & 2.90\% & 1.81 & 4.27 & 4.17\% & 2.49 & 5.69 & 5.79\% \\
+    Graph WaveNet & 1.30 & 2.74 & 2.73\% & 1.63 & 3.70 & 3.67\% & 1.95 & 4.52 & 4.63\% \\
+    AGCRN & 1.35 & 2.83 & 2.87\% & 1.69 & 3.80 & 3.84\% & 1.96 & 4.52 & 4.67\% \\
+    \midrule
+    ASTGAT (ours) & \textbf{1.28} & \textbf{2.70} & \textbf{2.68\%} & \textbf{1.59} & \textbf{3.62} & \textbf{3.58\%} & \textbf{1.86} & \textbf{4.33} & \textbf{4.38\%} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
 \end{document}
 </script>
 
@@ -733,7 +820,219 @@ In this paper, we presented ASTGAT, an adaptive spatio-temporal graph attention 
 \bibliographystyle{plainnat}
 \bibliography{refs}
 
+\appendix
+
+\section{超参数敏感性分析}
+
+本节考察节点嵌入维度 $d$ 与图卷积阶数 $K$ 对模型性能的影响，其余设置与正文保持一致。表~\ref{tab:zh-sens}给出了 METR-LA 数据集上 60 分钟预测的 MAE。可以看出，模型对嵌入维度并不敏感，当 $d = 10$ 时性能基本达到饱和，继续增大维度反而会略微增加过拟合风险；将 $K$ 由 1 增加到 2 能带来明显提升，而进一步增加到 3 只会增加计算量，并无额外收益。
+
+\begin{table}[h]
+  \centering
+  \caption{嵌入维度 $d$ 与图卷积阶数 $K$ 对 60 分钟预测 MAE 的影响}
+  \label{tab:zh-sens}
+  \begin{tabular}{lcccc}
+    \toprule
+    嵌入维度 $d$ & 5 & 10 & 20 & 40 \\
+    \midrule
+    $K = 1$ & 3.41 & 3.36 & 3.37 & 3.42 \\
+    $K = 2$ & 3.34 & \textbf{3.29} & 3.31 & 3.35 \\
+    $K = 3$ & 3.35 & 3.30 & 3.31 & 3.37 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{复杂度分析}
+
+对于包含 $N$ 个节点的路网，自适应图生成器在每个时间步计算 $\mathbf{E}_t \mathbf{E}_t^{\top}$ 的复杂度为 $\mathcal{O}(N^2 d)$，$K$ 阶图卷积的复杂度为 $\mathcal{O}(K N^2 C)$，而空洞时间卷积可以在所有时间步上并行计算，其开销与序列长度呈线性关系。因此，模型一次前向传播的总体复杂度为
+\begin{equation}
+  \mathcal{O}\left(T \left(N^2 d + K N^2 C\right) + T N C^2 L\right),
+\end{equation}
+其中 $L$ 为时间卷积层数。由于实际中 $d$ 和 $K$ 均为较小的常数，只有在路网规模非常大时关于 $N$ 的二次项才会成为瓶颈。对于包含数千个传感器的大规模路网，可以采用 top-$k$ 稀疏化的邻接矩阵，将复杂度降低至 $\mathcal{O}(N k d)$，且精度损失很小。
+
 \end{document}
+</script>
+
+<script type="text/plain" id="file-refs.bib">
+@article{williams2003sarima,
+  author  = {Williams, Billy M. and Hoel, Lester A.},
+  title   = {Modeling and Forecasting Vehicular Traffic Flow as a Seasonal {ARIMA} Process: Theoretical Basis and Empirical Results},
+  journal = {Journal of Transportation Engineering},
+  volume  = {129}, number = {6}, pages = {664--672},
+  year    = {2003}
+}
+
+@inproceedings{li2018dcrnn,
+  author    = {Li, Yaguang and Yu, Rose and Shahabi, Cyrus and Liu, Yan},
+  title     = {Diffusion Convolutional Recurrent Neural Network: Data-Driven Traffic Forecasting},
+  booktitle = {International Conference on Learning Representations},
+  year      = {2018}
+}
+
+@inproceedings{yu2018stgcn,
+  author    = {Yu, Bing and Yin, Haoteng and Zhu, Zhanxing},
+  title     = {Spatio-Temporal Graph Convolutional Networks: A Deep Learning Framework for Traffic Forecasting},
+  booktitle = {Proceedings of IJCAI},
+  pages     = {3634--3640},
+  year      = {2018}
+}
+
+@article{hochreiter1997lstm,
+  author  = {Hochreiter, Sepp and Schmidhuber, J{\"u}rgen},
+  title   = {Long Short-Term Memory},
+  journal = {Neural Computation},
+  volume  = {9}, number = {8}, pages = {1735--1780},
+  year    = {1997}
+}
+
+@inproceedings{kipf2017gcn,
+  author    = {Kipf, Thomas N. and Welling, Max},
+  title     = {Semi-Supervised Classification with Graph Convolutional Networks},
+  booktitle = {International Conference on Learning Representations},
+  year      = {2017}
+}
+
+@inproceedings{velickovic2018gat,
+  author    = {Veli{\v{c}}kovi{\'c}, Petar and Cucurull, Guillem and Casanova, Arantxa and Romero, Adriana and Li{\`o}, Pietro and Bengio, Yoshua},
+  title     = {Graph Attention Networks},
+  booktitle = {International Conference on Learning Representations},
+  year      = {2018}
+}
+
+@inproceedings{guo2019astgcn,
+  author    = {Guo, Shengnan and Lin, Youfang and Feng, Ning and Song, Chao and Wan, Huaiyu},
+  title     = {Attention Based Spatial-Temporal Graph Convolutional Networks for Traffic Flow Forecasting},
+  booktitle = {Proceedings of AAAI},
+  pages     = {922--929},
+  year      = {2019}
+}
+
+@inproceedings{zheng2020gman,
+  author    = {Zheng, Chuanpan and Fan, Xiaoliang and Wang, Cheng and Qi, Jianzhong},
+  title     = {{GMAN}: A Graph Multi-Attention Network for Traffic Prediction},
+  booktitle = {Proceedings of AAAI},
+  pages     = {1234--1241},
+  year      = {2020}
+}
+
+@inproceedings{bruna2014spectral,
+  author    = {Bruna, Joan and Zaremba, Wojciech and Szlam, Arthur and LeCun, Yann},
+  title     = {Spectral Networks and Locally Connected Networks on Graphs},
+  booktitle = {International Conference on Learning Representations},
+  year      = {2014}
+}
+
+@inproceedings{defferrard2016cheb,
+  author    = {Defferrard, Micha{\"e}l and Bresson, Xavier and Vandergheynst, Pierre},
+  title     = {Convolutional Neural Networks on Graphs with Fast Localized Spectral Filtering},
+  booktitle = {Advances in Neural Information Processing Systems},
+  pages     = {3844--3852},
+  year      = {2016}
+}
+
+@inproceedings{vaswani2017attention,
+  author    = {Vaswani, Ashish and Shazeer, Noam and Parmar, Niki and Uszkoreit, Jakob and Jones, Llion and Gomez, Aidan N. and Kaiser, {\L}ukasz and Polosukhin, Illia},
+  title     = {Attention Is All You Need},
+  booktitle = {Advances in Neural Information Processing Systems},
+  pages     = {5998--6008},
+  year      = {2017}
+}
+
+@inproceedings{wu2019graph,
+  author    = {Wu, Zonghan and Pan, Shirui and Long, Guodong and Jiang, Jing and Zhang, Chengqi},
+  title     = {Graph {WaveNet} for Deep Spatial-Temporal Graph Modeling},
+  booktitle = {Proceedings of IJCAI},
+  pages     = {1907--1913},
+  year      = {2019}
+}
+
+@inproceedings{bai2020agcrn,
+  author    = {Bai, Lei and Yao, Lina and Li, Can and Wang, Xianzhi and Wang, Can},
+  title     = {Adaptive Graph Convolutional Recurrent Network for Traffic Forecasting},
+  booktitle = {Advances in Neural Information Processing Systems},
+  year      = {2020}
+}
+</script>
+
+<script type="text/plain" id="file-notation.tex">
+% ------------------------------------------------------------
+% notation.tex -- shared macros, \input{} from main.tex
+% ------------------------------------------------------------
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\V}{\mathcal{V}}
+\newcommand{\X}{\mathbf{X}}
+\newcommand{\A}{\mathbf{A}}
+\newcommand{\E}{\mathbf{E}}
+\newcommand{\W}{\mathbf{W}}
+\newcommand{\Z}{\mathbf{Z}}
+\newcommand{\T}{\top}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\softmax}{softmax}
+\DeclareMathOperator{\relu}{ReLU}
+
+% horizons
+\newcommand{\Tin}{T}
+\newcommand{\Tout}{T'}
+
+% TODO: unify notation for the horizon (T' vs. H) before submission
+% TODO: ask whether \boldsymbol is preferred for tensors
+</script>
+
+<script type="text/plain" id="file-appendix.tex">
+% ------------------------------------------------------------
+% appendix.tex
+% Most of this has been merged into main.tex.
+% Keep the file until the camera-ready version, just in case.
+% ------------------------------------------------------------
+
+\section{Implementation Details}
+\label{app:impl}
+
+All models are implemented in PyTorch and trained on a single GPU.
+We use the official implementations of the baselines when available
+and follow the hyperparameters reported in the original papers.
+
+\paragraph{Data preprocessing.}
+Missing values (zeros in the raw speed readings) are excluded from
+the loss and from all evaluation metrics.
+
+% \section{Visualization of Learned Graphs}
+% TODO: add heatmaps of A_t at 8:00 and 17:30
+% \begin{figure}[h]
+%   \centering
+%   \includegraphics[width=\linewidth]{figures/case_study.png}
+%   \caption{Learned adjacency at morning and evening peak hours.}
+% \end{figure}
+</script>
+
+<script type="text/plain" id="file-conf_template.sty">
+% conf_template.sty -- conference style (do not modify)
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{conf_template}[2026/04/01 conference style]
+
+\newif\if@preprint\@preprintfalse
+\newif\if@final\@finalfalse
+\DeclareOption{preprint}{\@preprinttrue}
+\DeclareOption{final}{\@finaltrue}
+\ProcessOptions\relax
+
+\RequirePackage{natbib}
+\RequirePackage[letterpaper,textwidth=5.5in,textheight=9in,top=1in]{geometry}
+
+\renewcommand{\normalsize}{\@setfontsize\normalsize\@xpt\@xipt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.5pt}
+
+\renewcommand{\section}{\@startsection{section}{1}{\z@}%
+  {-2.0ex \@plus -0.5ex \@minus -0.2ex}%
+  {1.5ex \@plus 0.3ex \@minus 0.2ex}%
+  {\large\bf\raggedright}}
+
+\if@final\else
+  \AtBeginDocument{\linenumbers}
+\fi
+
+\endinput
 </script>
 
 <script>
@@ -947,6 +1246,7 @@ function parseDoc(src, partial) {
     if (tr.startsWith('\\end{document}')) { flush(); break; }
     if (!tr) { flush(); continue; }
     if (/^\\maketitle\b/.test(tr)) { flush(); blocks.push({ t: 'title', src: off }); continue; }
+    if (/^\\appendix\b/.test(tr)) { flush(); blocks.push({ t: 'appendix', src: off }); continue; }
     if ((m = tr.match(/^\\(chapter|section|subsection|subsubsection|paragraph)(\*?)\s*\{/))) {
       flush();
       const g = readGroup(tr, m[0].length - 1);
@@ -991,11 +1291,13 @@ function parseDoc(src, partial) {
 
 function makeCtx(blocks, lang) {
   const ctx = { labels: {}, citeMap: new Map(), lang };
-  let s = 0, ss = 0, sss = 0, eq = 0, tab = 0, fig = 0;
+  let s = 0, ss = 0, sss = 0, eq = 0, tab = 0, fig = 0, app = false;
+  const sn = () => app ? String.fromCharCode(64 + s) : String(s);
   for (const b of blocks) {
-    if (b.t === 'section') { if (!b.star) { s++; ss = 0; sss = 0; b.num = String(s); } }
-    else if (b.t === 'subsection') { if (!b.star) { ss++; sss = 0; b.num = s + '.' + ss; } }
-    else if (b.t === 'subsubsection') { if (!b.star) { sss++; b.num = s + '.' + ss + '.' + sss; } }
+    if (b.t === 'appendix') { app = true; s = 0; ss = 0; sss = 0; }
+    else if (b.t === 'section') { if (!b.star) { s++; ss = 0; sss = 0; b.num = sn(); } }
+    else if (b.t === 'subsection') { if (!b.star) { ss++; sss = 0; b.num = sn() + '.' + ss; } }
+    else if (b.t === 'subsubsection') { if (!b.star) { sss++; b.num = sn() + '.' + ss + '.' + sss; } }
     else if (b.t === 'eq' && b.numbered) { eq++; b.num = String(eq); }
     else if (b.t === 'table') { tab++; b.num = String(tab); }
     else if (b.t === 'figure') { fig++; b.num = String(fig); }
@@ -1106,6 +1408,35 @@ function chartSVG(lang) {
   g += `<text x="${(X0 + X1) / 2}" y="${Y0 + 28}" text-anchor="middle" fill="currentColor">${lang === 'zh' ? '预测步长（分钟）' : 'Prediction horizon (min)'}</text>`;
   g += `<text transform="translate(14 ${(Y0 + Y1) / 2}) rotate(-90)" text-anchor="middle" fill="currentColor">MAE</text>`;
   return `<svg viewBox="0 0 360 216" xmlns="http://www.w3.org/2000/svg" font-family="STIX Two Text, Times New Roman, serif" font-size="10" role="img" aria-label="Ablation results chart">${g}</svg>`;
+}
+function frameworkSVG() {
+  const boxes = [['Input', 'X(t−T+1 … t)', '#eef3fb'], ['Adaptive graph', 'generator', '#fdf1e6'], ['Spatial graph', 'attention', '#eaf6ef'], ['Gated dilated', 'TCN × 4', '#f3eefa'], ['Output', 'X(t+1 … t+T′)', '#eef3fb']];
+  let g = '';
+  boxes.forEach(([a, b, f], i) => {
+    const x = 10 + i * 104;
+    g += `<rect x="${x}" y="50" width="84" height="56" rx="6" fill="${f}" stroke="currentColor" stroke-width=".9"/><text x="${x + 42}" y="74" text-anchor="middle" fill="currentColor" font-weight="600">${a}</text><text x="${x + 42}" y="90" text-anchor="middle" fill="currentColor">${b}</text>`;
+    if (i < 4) g += `<path d="M${x + 86} 78h14" stroke="currentColor" stroke-width="1.2"/><path d="M${x + 100} 78l-5-3v6z" fill="currentColor"/>`;
+  });
+  g += '<path d="M156 50V26h208v24" fill="none" stroke="currentColor" stroke-dasharray="3 2" stroke-width=".9"/><text x="260" y="20" text-anchor="middle" fill="currentColor" font-style="italic">A_t shared across layers</text>';
+  g += '<path d="M260 106v24H52v-22" fill="none" stroke="currentColor" stroke-dasharray="3 2" stroke-width=".9"/><text x="156" y="146" text-anchor="middle" fill="currentColor" font-style="italic">residual connection</text>';
+  return `<svg viewBox="0 0 530 160" xmlns="http://www.w3.org/2000/svg" font-family="STIX Two Text, Times New Roman, serif" font-size="10.5" role="img" aria-label="Model framework diagram">${g}</svg>`;
+}
+function caseSVG() {
+  const X0 = 44, X1 = 520, Y0 = 170, Y1 = 14, f = h => 66 - 24 * Math.exp(-((h - 8) ** 2) / 1.6) - 30 * Math.exp(-((h - 17.6) ** 2) / 2.6);
+  const sx = h => X0 + h / 24 * (X1 - X0), sy = v => Y0 - (v - 20) / 50 * (Y0 - Y1);
+  let gt = [], pr = [];
+  for (let h = 0; h <= 24; h += 0.25) {
+    const n = Math.sin(h * 7.3) * 1.6 + Math.sin(h * 13.1) * 1.1;
+    gt.push(`${sx(h).toFixed(1)},${sy(f(h) + n).toFixed(1)}`);
+    pr.push(`${sx(h).toFixed(1)},${sy(f(h - 0.1) + n * 0.35).toFixed(1)}`);
+  }
+  let g = `<rect x="${X0}" y="${Y1}" width="${X1 - X0}" height="${Y0 - Y1}" fill="none" stroke="currentColor" stroke-width=".8"/>`;
+  [20, 30, 40, 50, 60, 70].forEach(v => { g += `<text x="${X0 - 5}" y="${sy(v) + 3}" text-anchor="end" fill="currentColor">${v}</text><line x1="${X0}" x2="${X1}" y1="${sy(v)}" y2="${sy(v)}" stroke="currentColor" stroke-opacity=".1"/>`; });
+  [0, 4, 8, 12, 16, 20, 24].forEach(h => { g += `<text x="${sx(h)}" y="${Y0 + 13}" text-anchor="middle" fill="currentColor">${String(h).padStart(2, '0')}:00</text>`; });
+  g += `<polyline points="${gt.join(' ')}" fill="none" stroke="#555" stroke-width="1.1"/><polyline points="${pr.join(' ')}" fill="none" stroke="#c0392b" stroke-width="1.4" stroke-dasharray="4 2"/>`;
+  g += `<line x1="${X1 - 150}" x2="${X1 - 130}" y1="${Y1 + 14}" y2="${Y1 + 14}" stroke="#555"/><text x="${X1 - 125}" y="${Y1 + 17}" fill="currentColor">Ground truth</text><line x1="${X1 - 150}" x2="${X1 - 130}" y1="${Y1 + 28}" y2="${Y1 + 28}" stroke="#c0392b" stroke-dasharray="4 2" stroke-width="1.4"/><text x="${X1 - 125}" y="${Y1 + 31}" fill="currentColor">ASTGAT (60 min)</text>`;
+  g += `<text transform="translate(12 ${(Y0 + Y1) / 2}) rotate(-90)" text-anchor="middle" fill="currentColor">Speed (mph)</text><text x="${(X0 + X1) / 2}" y="${Y0 + 28}" text-anchor="middle" fill="currentColor">Sensor 773869, METR-LA test set</text>`;
+  return `<svg viewBox="0 0 530 205" xmlns="http://www.w3.org/2000/svg" font-family="STIX Two Text, Times New Roman, serif" font-size="10" role="img" aria-label="Case study chart">${g}</svg>`;
 }
 function refsList(ctx) {
   return [...ctx.citeMap.entries()].map(([k, n]) => `<li value="${n}">${esc(BIB[k] || k)}</li>`).join('');
@@ -1440,6 +1771,7 @@ const PV = {
     const sb = this.scroll.getBoundingClientRect(), lb = lastEl.getBoundingClientRect();
     this.scroll.scrollTop = Math.max(0, this.scroll.scrollTop + lb.bottom - sb.top - this.scroll.clientHeight + 60);
     $('#pgno').textContent = `${pages} / ${pages}`;
+    updateLog(text, holder, pages);
     const secs = blocks.filter(b => b.t === 'section' || b.t === 'subsection');
     $('#olist').innerHTML = secs.length
       ? secs.map(b => `<div class="oi${b.t === 'subsection' ? ' l2' : ''}">${esc(tokenize(b.tex).map(t => t.text || '').join(''))}</div>`).join('')
@@ -1507,7 +1839,7 @@ const Snd = {
 
 /* ---------------- typing engine ---------------- */
 const E = {
-  mode: 'latex', src: '', mask: null, W: null, pos: 0, q: [], credit: 0, waitUntil: 0, timer: null, typingT: null,
+  mode: 'latex', src: '', mask: null, W: null, pos: 0, round: 1, wf: 1, q: [], credit: 0, waitUntil: 0, timer: null, typingT: null,
   get len() { return this.mode === 'latex' ? this.src.length : this.W.U.length; },
   get view() { return this.mode === 'latex' ? LV : WV; },
   unit(i) { return this.mode === 'latex' ? { k: 'ch', ch: this.src[i], prose: this.mask[i] === 1, src: i } : this.W.U[i]; },
@@ -1564,12 +1896,19 @@ const E = {
     if (!this.q.length) this.plan();
     const a = this.q[0];
     if (a.w != null) { this.q.shift(); this.waitUntil = now + a.w; this.schedule(a.w); return; }
-    if (a.restart) { this.q.shift(); this.ff(0); this.schedule(500); return; }
+    if (a.restart) { this.q.shift(); this.round++; renameDocs(); this.ff(0); this.schedule(500); return; }
     if (!S.auto && this.credit <= 0) return;
     this.q.shift();
     if (!S.auto) this.credit--;
     if (a.bs) { this.view.bs(); Snd.play('bs'); }
-    else { this.apply(a.u); if (a.adv) this.pos++; }
+    else {
+      this.apply(a.u);
+      if (a.adv) {
+        this.pos++;
+        const u = a.u;
+        if (u.k === 'ch' && (CJK.test(u.ch) || (u.ch === ' ' || u.ch === '\n') && this.pos > 1 && /[A-Za-z0-9]/.test(this.unit(this.pos - 2).ch || ''))) Stats.d.words++;
+      }
+    }
     this.view.after();
     document.body.classList.add('typing');
     clearTimeout(this.typingT); this.typingT = setTimeout(() => document.body.classList.remove('typing'), 650);
@@ -1581,6 +1920,7 @@ const E = {
     if (a.bs) return d * 0.75;
     const u = a.u;
     if (u && u.k === 'ch') {
+      if (u.ch === ' ' || CJK.test(u.ch) && R() < 0.25) this.wf = rnd(0.7, 1.35);
       if (u.ch === ' ') {
         const prev = this.pos > 1 ? this.unit(this.pos - 2) : null;
         if (this.mode === 'latex' && prev && (prev.ch === ' ' || prev.ch === '\n') && /^\s*$/.test(LV.lines[LV.last])) d *= 0.2;
@@ -1590,7 +1930,7 @@ const E = {
       else if (u.ch === '\n') d *= 2;
     }
     if (!S.auto && this.credit > 24) d *= 0.6;
-    return d;
+    return d * (this.wf || 1);
   },
   plan() {
     if (this.pos >= this.len) { this.q.push({ w: 3000 }, { restart: true }); return; }
@@ -1690,7 +2030,8 @@ const UI = {
   hide() { this.open = false; $('#settings').hidden = true; saveS(); E.waitUntil = 0; if (!E.timer) E.tick(); },
   sync() {
     $$('#o-skin .chip').forEach(c => c.classList.toggle('on', c.dataset.v === S.skin));
-    $('#o-preset').value = S.preset; $('#o-custom').hidden = S.preset !== 'custom'; $('#o-custom').value = S.custom;
+    $('#o-preset').value = S.preset; $('#o-custom').hidden = $('#o-filewrap').hidden = S.preset !== 'custom'; $('#o-custom').value = S.custom;
+    Stats.show();
     const setR = (id, v, txt) => { $('#o-' + id).value = v; $('#v-' + id).textContent = txt; };
     setR('perkey', S.perKey, S.perKey + ' 字');
     setR('cps', S.cps, S.cps + ' 字/秒');
@@ -1714,10 +2055,16 @@ $('#o-custom').addEventListener('input', e => {
   S.custom = e.target.value; clearTimeout(customT);
   customT = setTimeout(() => { saveS(); E.load(0, S.skin); }, 600);
 });
+$('#o-file').addEventListener('change', e => {
+  const f = e.target.files && e.target.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = () => { S.custom = String(r.result || ''); S.preset = 'custom'; saveS(); UI.sync(); E.load(0, S.skin); toast(`已导入 ${esc(f.name)}`); };
+  r.readAsText(f); e.target.value = '';
+});
 const bindRange = (id, key) => $('#o-' + id).addEventListener('input', e => { S[key] = +e.target.value; saveS(); UI.sync(); });
 bindRange('perkey', 'perKey'); bindRange('cps', 'cps'); bindRange('typo', 'typo'); bindRange('pause', 'pause'); bindRange('autocps', 'autoCps'); bindRange('vol', 'volume');
 $('#o-vol').addEventListener('change', () => { Snd.init(); Snd.play('key'); });
-$('#o-auto').addEventListener('change', e => { S.auto = e.target.checked; saveS(); applyAutoDot(); Snd.init(); });
+$('#o-auto').addEventListener('change', e => { S.auto = e.target.checked; saveS(); applyAutoDot(); Snd.init(); if (S.auto) keepAwake(); });
 $('#o-sound').addEventListener('change', e => { S.sound = e.target.checked; saveS(); if (S.sound) { Snd.init(); Snd.play('key'); } });
 $('#o-switch').addEventListener('change', e => { S.switchType = e.target.value; saveS(); Snd.init(); Snd.play('key'); setTimeout(() => Snd.play('space'), 160); });
 $('#o-theme').addEventListener('change', e => { S.theme = e.target.value; saveS(); applyTheme(); });
@@ -1731,7 +2078,8 @@ const IGNORE = new Set(['Shift', 'Control', 'Alt', 'Meta', 'CapsLock', 'NumLock'
 document.addEventListener('keydown', e => {
   if (UI.open) { if (e.key === 'Escape' || e.key === 'F2') { e.preventDefault(); UI.hide(); } return; }
   if (e.key === 'F2') { e.preventDefault(); UI.show(); return; }
-  if (e.key === 'F4') { e.preventDefault(); S.auto = !S.auto; saveS(); applyAutoDot(); Snd.init(); toast(S.auto ? '自动打字：开' : '自动打字：关'); if (!E.timer) E.tick(); return; }
+  if (e.key === 'F4') { e.preventDefault(); S.auto = !S.auto; saveS(); applyAutoDot(); Snd.init(); if (S.auto) keepAwake(); toast(S.auto ? '自动打字：开' : '自动打字：关'); if (!E.timer) E.tick(); return; }
+  if (e.key === 'F9') { e.preventDefault(); toggleFS(); return; }
   if (e.key === 'F8') { e.preventDefault(); S.sound = !S.sound; saveS(); toast(S.sound ? '键盘音效：开' : '键盘音效：关'); return; }
   if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S' || e.key === 'Enter')) {
     e.preventDefault(); if (E.mode === 'latex') PV.compile(); else { $('#wdsaved').textContent = '· Saved'; } return;
@@ -1741,12 +2089,16 @@ document.addEventListener('keydown', e => {
   e.preventDefault();
   hideHint();
   Snd.init();
+  backToMain();
+  $('#logs').hidden = true;
+  if (!wakeLock) keepAwake();
   E.lastAct = performance.now();
+  if (!e.repeat) Stats.d.keys++;
   E.press(e.repeat ? 0.6 : 1);
 });
 ['#edscroll', '#pvscroll', '#wcanvas'].forEach(sel => $(sel).addEventListener('pointerdown', e => {
   if (e.pointerType === 'mouse') return;
-  hideHint(); Snd.init(); E.lastAct = performance.now(); E.press(2);
+  hideHint(); Snd.init(); backToMain(); if (!wakeLock) keepAwake(); Stats.d.keys++; E.lastAct = performance.now(); E.press(2);
 }));
 function hideHint() { if (!S.hintSeen) { S.hintSeen = true; saveS(); $('#toast').hidden = true; } }
 
@@ -1756,6 +2108,103 @@ function startPos(src) {
   const j = src.slice(i).search(/[.。]/);
   return j > 0 ? i + j + 1 : i;
 }
+
+/* ---------------- extra files in the tree ---------------- */
+const mainEl = $('#curfile');
+const mainName = () => E.round > 1 ? `chapter_draft_v${E.round}.tex` : 'main.tex';
+function renameDocs() {
+  mainEl.lastChild.textContent = mainName();
+  if (!$('#altview').hidden) openFile(mainEl); else $('#st-file').textContent = mainName();
+  $('#wdname').textContent = `Thesis_Draft_v${6 + E.round}.docx`;
+  document.title = S.skin === 'latex' ? `${mainName()} · Thesis Draft` : $('#wdname').textContent;
+}
+function openFile(el) {
+  const name = el.dataset.file, alt = $('#altview'), ed = $('#edscroll');
+  $$('.fi.on').forEach(x => x.classList.remove('on')); el.classList.add('on');
+  acpop.hidden = true;
+  if (name === 'main') { alt.hidden = true; ed.hidden = false; $('#st-file').textContent = mainName(); LV.follow(true); return; }
+  ed.hidden = true; alt.hidden = false; $('#st-file').textContent = name;
+  if (/\.(pdf|png)$/.test(name)) {
+    alt.className = 'img';
+    alt.innerHTML = `<div class="imgbox">${name === 'ablation.pdf' ? chartSVG(LANG) : name === 'framework.pdf' ? frameworkSVG() : caseSVG()}</div>`;
+  } else {
+    alt.className = '';
+    const src = (document.getElementById('file-' + name) || { textContent: '' }).textContent.replace(/^\s*\n/, '').replace(/\s+$/, '');
+    let st = { m: false };
+    alt.innerHTML = src.split('\n').map(l => { const r = hl(l, st); st = r.end; return `<div class="ln"><span class="gut"></span><span class="code">${r.html}</span></div>`; }).join('');
+  }
+  alt.scrollTop = 0;
+}
+$$('.fi[data-file]').forEach(el => el.addEventListener('click', () => openFile(el)));
+function backToMain() { if (!$('#altview').hidden) openFile(mainEl); }
+
+/* ---------------- compile log ---------------- */
+function updateLog(text, holder, pages) {
+  const lines = text.split('\n'), warns = [];
+  const lineOf = idx => text.slice(0, idx).split('\n').length;
+  holder.querySelectorAll('.cite').forEach(c => { if (c.textContent.includes('??')) c.dataset.undef = 1; });
+  const re = /\\(?:eq)?ref\{([^}]*)\}/g; let m; const seen = new Set();
+  const { blocks } = parseDoc(text, true); const labels = new Set(blocks.map(b => b.label).filter(Boolean));
+  while ((m = re.exec(text))) if (!labels.has(m[1]) && !seen.has(m[1])) { seen.add(m[1]); warns.push(`<b>LaTeX Warning:</b> Reference \`${esc(m[1])}' on page ${Math.max(1, pages - 1)} undefined on input line ${lineOf(m.index)}.`); }
+  let k = 0;
+  for (let i = 0; i < lines.length && k < 3; i++) {
+    if (lines[i].length > 420 && i % 3 === 0) { k++; warns.push(`<b>Overfull \\hbox</b> (${((i * 7.31) % 9 + 0.4).toFixed(2)}pt too wide) in paragraph at lines ${i + 1}--${i + 2}`); }
+  }
+  const badge = $('#logbadge');
+  badge.hidden = !warns.length; badge.textContent = warns.length;
+  $('#logs').innerHTML = `<div class="lh">Raw logs · ${mainName()}<span>compiled in ${(rnd(0.9, 2.4)).toFixed(1)}s, ${pages} page${pages > 1 ? 's' : ''}</span></div>` +
+    (warns.length ? warns.map(w => `<div class="le">${w}</div>`).join('') : '<div class="ok">No errors or warnings.</div>');
+}
+$('#logbtn').addEventListener('click', e => { e.stopPropagation(); $('#logs').hidden = !$('#logs').hidden; });
+document.addEventListener('click', e => { if (!e.target.closest('#logs')) $('#logs').hidden = true; });
+
+/* ---------------- daily stats ---------------- */
+const Stats = {
+  day: () => { const d = new Date(); return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`; },
+  d: null,
+  load() { const x = store.get('stats', null); this.d = (x && x.day === this.day()) ? x : { day: this.day(), words: 0, keys: 0, secs: 0 }; },
+  save() { store.set('stats', this.d); },
+  show() {
+    $('#s-words').textContent = fmt(this.d.words);
+    $('#s-keys').textContent = fmt(this.d.keys);
+    const m = Math.floor(this.d.secs / 60);
+    $('#s-time').textContent = m >= 60 ? `${Math.floor(m / 60)} 小时 ${m % 60} 分` : `${m} 分`;
+  }
+};
+Stats.load();
+let statTick = 0;
+setInterval(() => {
+  if (Stats.d.day !== Stats.day()) Stats.load();
+  if (document.visibilityState === 'visible' && (S.auto || performance.now() - (E.lastAct || -1e9) < 15000)) Stats.d.secs++;
+  if (++statTick % 10 === 0) Stats.save();
+  if (UI.open) Stats.show();
+}, 1000);
+addEventListener('pagehide', () => { Stats.save(); saveProgress(); });
+
+/* ---------------- fullscreen + keep screen awake ---------------- */
+function toggleFS() {
+  const d = document, el = d.documentElement;
+  const fail = () => toast('这里不允许全屏，可以试试浏览器自己的全屏（F11）');
+  try {
+    if (d.fullscreenElement || d.webkitFullscreenElement) (d.exitFullscreen || d.webkitExitFullscreen).call(d);
+    else {
+      const fn = el.requestFullscreen || el.webkitRequestFullscreen;
+      if (!fn) return fail();
+      const r = fn.call(el); if (r && r.catch) r.catch(fail);
+    }
+  } catch (e) { fail(); }
+}
+let wakeLock = null;
+async function keepAwake() {
+  try {
+    if (!wakeLock && navigator.wakeLock && document.visibilityState === 'visible') {
+      wakeLock = await navigator.wakeLock.request('screen');
+      wakeLock.addEventListener('release', () => { wakeLock = null; });
+    }
+  } catch (e) {}
+}
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && (S.auto || E.lastAct)) keepAwake(); });
+$('#b-fs').addEventListener('click', () => { UI.hide(); toggleFS(); });
 
 /* ---------------- boot ---------------- */
 applyTheme(); applySkin(); applyAutoDot();
@@ -1769,7 +2218,7 @@ applyTheme(); applySkin(); applyAutoDot();
   } else if (mode === 'word') { E.src = src; E.mask = proseMask(src); pos = E.latexToWord(pos); }
   E.load(pos, mode);
 }
-if (!S.hintSeen) toast('随便敲键盘，论文就会自己写出来 · <kbd>F2</kbd> 设置 · <kbd>F4</kbd> 自动打字', 9000);
+if (!S.hintSeen) toast('随便敲键盘，论文就会自己写出来 · <kbd>F2</kbd> 设置 · <kbd>F4</kbd> 自动打字 · <kbd>F9</kbd> 全屏', 9000);
 window.__mjReady = () => {
   mjReady = true;
   try { document.head.appendChild(MathJax.svgStylesheet()); } catch (e) {}
